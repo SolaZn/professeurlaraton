@@ -47,7 +47,7 @@ def boutonNotif():
     print("Ici")
     notif_in_use = True
     bvalidation=Button(InterfaceJeu, text="OK!", command=supprimeNotif)
-    bvalidation.place(x=350,y=580) #enlever bouton event texte
+    bvalidation.place(x=205,y=575) #enlever bouton event texte
 
 
 def supprimeNotif():
@@ -91,6 +91,11 @@ def piece1():
     bgauche_piece1=Button(InterfaceJeu, text="←", command=piece4)
     bgauche_piece1.place(x=735,y=575)
 
+    can1.create_image(314,380,image=perso1)
+    can1.create_image(420,380,image=perso2)
+    can1.create_image(550,380,image=perso3)
+    can1.create_image(760,380,image=perso4)
+  
     #fond de la piece
     can1.itemconfig(image_fond,image=fond_piece1)
 
@@ -171,7 +176,7 @@ def reset_piece3():
 def piece4():
     global can1, can2, notif, image_fond
     global bdroit_piece4, bool_piece4
-    bool_piece4=True
+    bool_piece4="True"
 
     #boutons de l'interface dans la piece
     reset_piece1()
@@ -190,6 +195,7 @@ def reset_piece4():
         bdroit_piece4.place_forget()
         bool_piece4 = "Inactive"
 
+#----- PARTIE EXECUTION DU CODE -----
 #creation fenetre graphique
 InterfaceJeu=Tk()
 InterfaceJeu.geometry('852x700')
@@ -201,7 +207,10 @@ fond_piece4=PhotoImage(file="images/background-4.png")
 clicX=0
 clicY=0
 
-#initialisatoin des boutons
+perso1=PhotoImage(file="images/perso/lunette.png")
+perso2=PhotoImage(file="images/perso/persovert.png")
+perso3=PhotoImage(file="images/perso/robeperso.png")
+perso4=PhotoImage(file="images/perso/filleperso.png")
 
 #lancement
 pygame.mixer.init()
