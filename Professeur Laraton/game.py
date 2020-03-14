@@ -5,7 +5,7 @@ import pygame
 def interface():
     global can1, can2, event, start, image_fond
     global bool_piece1,bool_piece2,bool_piece3,bool_piece4
-    global texte_global
+    global texte_global, notif_in_use
 
     #2 canvas sont nécessaires
         #premier canvas -> affichage de scene
@@ -36,28 +36,27 @@ def interface():
 
 def reset_interface(): #fonction utilisée pour changer de scène
     global can1, can2, start
-    start.place_forget()  #on enlève les boutons de l'interface
+    start.place_forget()  #on enlève les boutons de l'interface de départ
 
-def notif(texte,color):
+def notif(texte,color): #est appelée lorsqu'il faut afficher un texte à l'utilisateur
     global can1, can2, texte_global,notif_in_use
     can2.itemconfig(texte_global,text=texte,fill=color)
 
-def boutonNotif():
+def boutonNotif(): #est appelée en même temps pour afficher le bouton de confirmation de lecture
     global can1, can2, bvalidation, notif_in_use
     print("Ici")
     notif_in_use = True
     bvalidation=Button(InterfaceJeu, text="OK!", command=supprimeNotif)
-    bvalidation.place(x=205,y=575) #enlever bouton event texte
+    bvalidation.place(x=205,y=575)
 
-
-def supprimeNotif():
+def supprimeNotif(): #est appelée après l'usage du bouton pour enlever toute notif
     global bvalidation,notif, notif_in_use
     if notif_in_use == True:
         notif(" ","black")
         bvalidation.place_forget()
         notif_in_use = False
 
-def clic(event): #test position pour zones de clic avec if else
+def clic(event): #recupère les positions obtenues par objectChecker()
     global clicX,clicY
     clicX=event.x
     clicY=event.y
@@ -65,7 +64,7 @@ def clic(event): #test position pour zones de clic avec if else
 def objectChecker(nom_piece):
     #donner la position d'appui de l'utilisateur pour déterminer si il a cliqué sur l'image
     global can1, can2
-    can1.focus_set() #test clic zones
+    can1.focus_set() #prévient qu'on va chercher des coordonnées dans le canvas 1 (interface d'affichage)
     can1.bind("<ButtonPress-1>",clic)
 
 #hall du manoir
@@ -118,12 +117,13 @@ def matrice_piece1():
         print("CASTANER")
 
 def reset_piece1(): #fonction utilisée pour changer de scène, on enlève tout
-    global can1, can2, bhaut_piece1, bdroit_piece1, bgauche_piece1
+    global bhaut_piece1, bdroit_piece1, bgauche_piece1, supprimeNotif
     global bool_piece1
     if bool_piece1=="True" or bool_piece1 == "Inactive":
         bhaut_piece1.place_forget()
         bdroit_piece1.place_forget()
         bgauche_piece1.place_forget()
+        supprimeNotif()
         bool_piece1 = "Inactive"
 
 #couloir haut du manoir
@@ -145,10 +145,11 @@ def piece2():
     pygame.mixer.music.stop()
 
 def reset_piece2():
-    global can1, can2, image_fond, bbas_piece2,bool_piece2
-    global bool_place2
+    global can1, can2, image_fond, bbas_piece2, supprimeNotif
+    global bool_piece2
     if bool_piece2=="True" or bool_piece2 == "Inactive":
         bbas_piece2.place_forget()
+        supprimeNotif()
         bool_piece2 = "Inactive"
 
 #salon sous la nuit du manoir
@@ -166,10 +167,11 @@ def piece3():
     can1.itemconfig(image_fond,image=fond_piece3)
 
 def reset_piece3():
-    global can1, can2, image_fond, bgauche_piece3,bool_piece3
-    global bool_place3
+    global bgauche_piece3, supprimeNotif
+    global bool_piece3
     if bool_piece3=="True" or bool_piece3 == "Inactive" :
         bgauche_piece3.place_forget()
+        supprimeNotif()
         bool_piece3 = "Inactive"
 
 #salle de musique du manoir
@@ -189,10 +191,11 @@ def piece4():
 
 
 def reset_piece4():
-    global can1, can2, image_fond
-    global bdroit_piece4,bool_piece4
+    global bdroit_piece4, supprimeNotif
+    global bool_piece4
     if bool_piece4 == "True" or bool_piece4 == "Inactive" :
         bdroit_piece4.place_forget()
+        supprimeNotif()
         bool_piece4 = "Inactive"
 
 #----- PARTIE EXECUTION DU CODE -----
