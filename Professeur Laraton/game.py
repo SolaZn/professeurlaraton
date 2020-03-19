@@ -5,7 +5,7 @@ import pygame
 def interface():
     global can1, can2, event, start, image_fond
     global bool_piece1,bool_piece2,bool_piece3,bool_piece4
-    global texte_global, notif_in_use
+    global texte_global, notif_in_use, fondmenu, quitter, reglesb
 
     #2 canvas sont nécessaires
         #premier canvas -> affichage de scene
@@ -17,10 +17,17 @@ def interface():
 
     texte_global=can2.create_text(220,75,text="",fill="black")
     image_fond=can1.create_image(0,0, anchor="nw")
+    can1.itemconfig(image_fond, image=fond)
 
     #boutons
     start=Button(InterfaceJeu, text="START", command=piece1)
     start.place(x=406,y=575)
+
+    quitter=Button(InterfaceJeu,text="Quitter",command=InterfaceJeu.destroy)
+    quitter.place(x=206,y=575)
+
+    reglesb=Button(InterfaceJeu,text="regles",command=regles)
+    reglesb.place(x=606,y=575)
 
     #booleens
     notif_in_use=False
@@ -33,10 +40,20 @@ def interface():
     pygame.mixer.music.play() # on joue le fichier
     pygame.mixer.music.set_volume(0.6) # réglage du volume (facultatif)'''
 
+def regles():
+    global can1,fond2,image_fond
+    reset_interface()
+    retour=Button(InterfaceJeu,text='retour',command=interface)
+    retour.place(x=30,y=150)
+    enonce=can1.create_text(300,250,text="les regles sont ...",fill="blue")#remplace le print
+    can1.itemconfig(image_fond,image=fond_piece1)
 
 def reset_interface(): #fonction utilisée pour changer de scène
-    global can1, can2, start
+    global can1, can2, start, quitter, reglesb
     start.place_forget()  #on enlève les boutons de l'interface de départ
+    start.place_forget()
+    quitter.place_forget()
+    reglesb.place_forget()
 
 def notif(texte,color): #est appelée lorsqu'il faut afficher un texte à l'utilisateur
     global can1, can2, texte_global,notif_in_use
@@ -214,7 +231,7 @@ perso1=PhotoImage(file="images/perso/lunette.png")
 perso2=PhotoImage(file="images/perso/persovert.png")
 perso3=PhotoImage(file="images/perso/robeperso.png")
 perso4=PhotoImage(file="images/perso/filleperso.png")
-
+fond=PhotoImage(file="images/bgmenu.png")
 #lancement
 pygame.mixer.init()
 interface()
