@@ -1,5 +1,5 @@
 from tkinter import *
-import pygame
+
 
 #interface globale du jeu
 def interface():
@@ -61,6 +61,7 @@ def clic(event): #test position pour zones de clic avec if else
     global clicX,clicY
     clicX=event.x
     clicY=event.y
+    print(clicX,clicY)
 
 def objectChecker(nom_piece):
     #donner la position d'appui de l'utilisateur pour déterminer si il a cliqué sur l'image
@@ -75,7 +76,7 @@ def piece1():
        #fonctions à faire : faire fonction pour trouver objet (focus et bind...)'''
     global can1, can2, notif, image_fond
     global bhaut_piece1, bdroit_piece1, bgauche_piece1
-    global bool_piece1
+    global bool_piece1,perso1,perso2,perso3,perso4
 
     bool_piece1="True"
     #boutons de l'interface dans la piece
@@ -91,6 +92,17 @@ def piece1():
     bgauche_piece1=Button(InterfaceJeu, text="←", command=piece4)
     bgauche_piece1.place(x=735,y=575)
 
+<<<<<<< Updated upstream
+=======
+    can1.create_image(314,380,tags="perso",image=perso1)
+    can1.create_image(420,380,tags="perso",image=perso2)
+    can1.create_image(550,380,tags="perso",image=perso3)
+    can1.create_image(760,380,tags="perso",image=perso4)
+
+    can1.bind("<Button-1>",clic1)
+    can1.focus_set()
+
+>>>>>>> Stashed changes
     #fond de la piece
     can1.itemconfig(image_fond,image=fond_piece1)
 
@@ -103,6 +115,17 @@ def piece1():
     texte_piece1="Bonjour mec"
     notif(texte_piece1,"white")
     boutonNotif()
+def clic1(event) :
+    global can1,bool_piece3
+    if  0< event.x<1000  and  0<event.y<1000:
+        print("couou")
+
+    else:
+        print("stop")
+
+
+
+
 
 def matrice_piece1():
     #tableau des positions des persos
@@ -113,12 +136,25 @@ def matrice_piece1():
         print("CASTANER")
 
 def reset_piece1(): #fonction utilisée pour changer de scène, on enlève tout
+<<<<<<< Updated upstream
     global can1, can2, bhaut_piece1, bdroit_piece1, bgauche_piece1
     global bool_piece1
+=======
+    global bhaut_piece1, bdroit_piece1, bgauche_piece1, supprimeNotif
+    global bool_piece1,perso1,perso2,perso3,perso4
+
+>>>>>>> Stashed changes
     if bool_piece1=="True" or bool_piece1 == "Inactive":
         bhaut_piece1.place_forget()
         bdroit_piece1.place_forget()
         bgauche_piece1.place_forget()
+<<<<<<< Updated upstream
+=======
+        can1.delete("perso")
+
+
+        supprimeNotif()
+>>>>>>> Stashed changes
         bool_piece1 = "Inactive"
 
 #couloir haut du manoir
@@ -190,6 +226,19 @@ def reset_piece4():
         bdroit_piece4.place_forget()
         bool_piece4 = "Inactive"
 
+<<<<<<< Updated upstream
+=======
+
+
+
+
+
+
+
+
+
+#----- PARTIE EXECUTION DU CODE -----
+>>>>>>> Stashed changes
 #creation fenetre graphique
 InterfaceJeu=Tk()
 InterfaceJeu.geometry('852x700')
@@ -204,6 +253,7 @@ clicY=0
 #initialisatoin des boutons
 
 #lancement
-pygame.mixer.init()
+
+
 interface()
 InterfaceJeu.mainloop()
