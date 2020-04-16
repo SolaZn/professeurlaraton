@@ -111,7 +111,7 @@ def piece1():
     can1.create_image(420,380,image=perso2)
     can1.create_image(550,380,image=perso3)
     can1.create_image(760,380,image=perso4)
-  
+
     #fond de la piece
     can1.itemconfig(image_fond,image=fond_piece1)
 
@@ -124,6 +124,14 @@ def piece1():
     texte_piece1="Bonjour mec"
     notif(texte_piece1,"white")
     boutonNotif()
+
+def clic1(event) :
+    global can1,bool_piece3
+    if  0< event.x<1000  and  0<event.y<1000:
+        print("couou")
+
+    else:
+        print("stop")
 
 def matrice_piece1():
     #tableau des positions des persos
@@ -140,6 +148,7 @@ def reset_piece1(): #fonction utilisée pour changer de scène, on enlève tout
         bhaut_piece1.place_forget()
         bdroit_piece1.place_forget()
         bgauche_piece1.place_forget()
+        can1.delete("perso")
         supprimeNotif()
         bool_piece1 = "Inactive"
 
