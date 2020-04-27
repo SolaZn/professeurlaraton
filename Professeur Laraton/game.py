@@ -66,21 +66,26 @@ def reset_interface(): #fonction utilisée pour changer de scène
     quitter.place_forget()
     reglesb.place_forget()
 
+#INTERACTIONS ---------------------------------------------------------------------------------- #INTERACTIONS
+    #GLOBALES#
 def notif(texte,color): #est appelée lorsqu'il faut afficher un texte à l'utilisateur
     global can1, can2, texte_global,notif_in_use
     can2.itemconfig(texte_global,text=texte,fill=color)
+    notif_in_use = True
 
 def boutonNotif(): #est appelée en même temps pour afficher le bouton de confirmation de lecture
     global can1, can2, bvalidation, notif_in_use
-    print("Ici")
-    notif_in_use = True
-    bvalidation=Button(InterfaceJeu, text="OK!", command=supprimeNotif)
-    bvalidation.place(x=205,y=575)
+    if notif_in_use == True:
+        bvalidation=Button(InterfaceJeu, text="OK!", command=supprimeNotif)
+        bvalidation.place(x=205,y=575)
+    else:
+        print('EXCEPTION')
 
 def supprimeNotif(): #est appelée après l'usage du bouton pour enlever toute notif
     global bvalidation,notif, notif_in_use
     if notif_in_use == True:
         notif(" ","black")
+        print("Ici")
         bvalidation.place_forget()
         notif_in_use = False
 
@@ -89,22 +94,37 @@ def clic(event): #recupère les positions obtenues par objectChecker()
     clicX=event.x
     clicY=event.y
 
-def objectChecker(nom_piece):
-    #donner la position d'appui de l'utilisateur pour déterminer si il a cliqué sur l'image
-    global can1, can2
-    can1.focus_set() #prévient qu'on va chercher des coordonnées dans le canvas 1 (interface d'affichage)
-    can1.bind("<ButtonPress-1>",clic)
+    #SPÉCIFIQUES#
+
+def presentation_clic(event): #Interactions clic liées à l'arrivée du joueur dans le manoir
+    global bool_clic2, bool_clic4, notif ,bool_intervention
+    if 293<event.x<335 and 316<event.y<436 :
+        notif("Salut ! Je m'appelle Xavier , vers 19h j'etais à mon club de lecture\n On vient tout juste de commencer le dernier tome de Game Of Throne ! ","white")
+        boutonNotif()
+
+    if 399<event.x<446 and 304<event.y<442 :
+        notif("Je suis Mark Armeau ,\nhier à 19h je suis aller boire un verre pour me changer les idées.","white")
+        boutonNotif()
+
+    if 535<event.x<572 and 316<event.y<436 and bool_clic2==False :
+        notif("Enchantée , je suis Sophie . Hier , lors de cet effroyable incident ,\n j'etait invitée a un bal dansant...\n d'ailleurs euh... \n Non rien oubliez .","white")
+        boutonNotif()
+        bool_intervention=True
+
+    if 734<event.x<784 and 322<event.y<433 and bool_clic4==False :
+        notif("Bonjour ! Je m'appelle Martine , hier , j'ai passer la journée avec mes petits-fils ", "white")
+        boutonNotif()
 
 def quitter1():
     global bquitter1,can2,fantome,notif,bool_clic2,bool_clic3,fantome1,quitter1,bool_fantome
     global bool_clic4,perso6,can1,bool_clic5,bool_invitation,bool_lettre,bool_intervention
-    bquitter1.place_forget()
+
     bool_bquitter=True
     notif(" ","black")
+
     if bool_fantome==True:
         can2.delete("fantome")
         bquitter1.place_forget()
-
 
     if bool_invitation==True:
         can1.delete("invitation")
@@ -133,8 +153,6 @@ def quitter1():
         bquitter1.place_forget()
         bool_intervention=False
 
-    bquitter1.place_forget()
-
 def fantome1(texte):
     global can1,bool_piece3,can2,fantome,quitter1,notif,bquitter1,bool_fantome
     can2.create_image(100,100,tags="fantome",image=fantome)
@@ -142,6 +160,14 @@ def fantome1(texte):
     bquitter1=Button(InterfaceJeu, text="suivant", command=quitter1)
     bquitter1.place(x=745,y=645)
     bool_fantome=True
+
+def clic1(event) :
+    global can1,bool_piece3
+    if  0< event.x<1000  and  0<event.y<1000:
+        print("couou")
+
+    else:
+        print("stop")
 
 def clic2(event) :
     global can1,invitation,fantome1,perso5,bool_clic2,bool_bquitter,notif,bool_clic3,bool_invitation
@@ -155,10 +181,19 @@ def clic2(event) :
         notif("\t\t Merci de l'avoir retrouvé maintenant je peux vous faire confiance\n\t\t j'ai vu Martine cacher quelquechose dans un tiroir dans le couloir.","white")
         bool_clic3=True
 
+def clic4(event):
+    global bool_clic4,trouver,notif,bool_clic5,bool_lettre
+    if 255<event.x<275 and 326<event.y<371:
+        bool_clic4=True
+        bool_lettre=True
+        trouver()
+    if 296<event.x<347 and 175<event.y<339 and bool_clic4==True:
+        notif("j'avais peur de vous le dire mais j'ai trouvé un coffre fermé dans le piano\n il y avait ecris dessus:\n-mon premier est un recipient où l'on met des fleurs\n -mon second est une fille rousse emprisonnée par un carré marron\n -mon troisième permet d'éclairer et réchauffer la piéce\nJe vous le dis car j'ai fais tomber la feuille dans la cheminée. ","white")
+        bool_clic5=True
 
 def trouver():
         global bvoir1,notif
-        notif("tu as trouvé quelquechose veux-tu le voir?","white")
+        notif("tu as trouvé quelque chose veux-tu le voir?","white")
         bvoir1=Button(InterfaceJeu, text="voir", command=voir1)
         bvoir1.place(x=745,y=645)
 
@@ -173,8 +208,7 @@ def voir1():
         can1.create_image(300,400,tags="lettre",image=lettre)
         fantome1("\t\t Elle aurais reçu une lettre de menace. Mais pourquoi?\n\t\t Allons parler à Martine pour plus d'informations. ")
 
-
-
+#PIECE ------------------------------------------------------------------------------------------------------------------------- #PIECE
 #hall du manoir
 def piece1():
     '''#objectif : le joueur part d'ici, il doit aller vers les autres
@@ -182,7 +216,7 @@ def piece1():
        #fonctions à faire : faire fonction pour trouver objet (focus et bind...)'''
     global can1, can2, notif, image_fond
     global bhaut_piece1, bdroit_piece1, bgauche_piece1
-    global bool_piece1,perso1,perso2,perso3,perso4, bool_clic2,bool_clic4,clique
+    global bool_piece1,perso1,perso2,perso3,perso4, bool_clic2,bool_clic4,presentation_clic
 
     bool_piece1="True"
     #boutons de l'interface dans la piece
@@ -198,10 +232,7 @@ def piece1():
     bgauche_piece1=Button(InterfaceJeu, text="←", command=piece4)
     bgauche_piece1.place(x=735,y=575)
 
-    can1.create_image(314,380,tags="perso",image=perso1)
-    can1.create_image(420,380,tags="perso",image=perso2)
-    can1.create_image(550,380,tags="perso1",image=perso3)
-    can1.create_image(760,380,tags="perso2",image=perso4)
+    fantome1()
 
     if bool_clic2==False:
         can1.create_image(550,380,tags="perso1",image=perso3)
@@ -216,12 +247,7 @@ def piece1():
         can1.delete("perso2")
 
     can1.focus_set() #test clic zones
-    can1.bind("<ButtonPress-1>",clique)
-
-    can1.create_image(314,380,image=perso1)
-    can1.create_image(420,380,image=perso2)
-    can1.create_image(550,380,image=perso3)
-    can1.create_image(760,380,image=perso4)
+    can1.bind("<ButtonPress-1>",presentation_clic)
 
     #fond de la piece
     can1.itemconfig(image_fond,image=fond_piece1)
@@ -229,20 +255,6 @@ def piece1():
     #interactions de la piece
 
         #on va opposer l'event à la matrice
-    matrice_piece1()
-
-    #discussions de la piece
-    texte_piece1="Bonjour mec"
-    notif(texte_piece1,"white")
-    boutonNotif()
-
-def clic1(event) :
-    global can1,bool_piece3
-    if  0< event.x<1000  and  0<event.y<1000:
-        print("couou")
-
-    else:
-        print("stop")
 
 def matrice_piece1():
     #tableau des positions des persos
@@ -267,17 +279,7 @@ def reset_piece1(): #fonction utilisée pour changer de scène, on enlève tout
         supprimeNotif()
         bool_piece1 = "Inactive"
 
-
-def clic4(event):
-    global bool_clic4,trouver,notif,bool_clic5,bool_lettre
-    if 255<event.x<275 and 326<event.y<371:
-        bool_clic4=True
-        bool_lettre=True
-        trouver()
-    if 296<event.x<347 and 175<event.y<339 and bool_clic4==True:
-        notif("j'avais peur de vous le dire mais j'ai trouvé un coffre fermé dans le piano\n il y avait ecris dessus:\n-mon premier est un recipient où l'on met des fleurs\n -mon second est une fille rousse emprisonnée par un carré marron\n -mon troisième permet d'éclairer et réchauffer la piéce\nJe vous le dis car j'ai fais tomber la feuille dans la cheminée. ","white")
-        bool_clic5=True
-
+#PIECE ------------------------------------------------------------------------------------------------------------------------- #PIECE
 #couloir haut du manoir
 def piece2():
     global can1, can2, notif, image_fond, bbas_piece2
@@ -293,6 +295,8 @@ def piece2():
     can1.focus_set() #test clic zones
     can1.bind("<ButtonPress-1>",clic4)
 
+    fantome1("test")
+
 
     #fond de la piece
     can1.itemconfig(image_fond,image=fond_piece2)
@@ -307,6 +311,7 @@ def reset_piece2():
         supprimeNotif()
         bool_piece2 = "Inactive"
 
+#PIECE ------------------------------------------------------------------------------------------------------------------------- #PIECE
 #salon sous la nuit du manoir
 def piece3():
     global can1, can2, notif, image_fond, bgauche_piece3
@@ -329,6 +334,7 @@ def reset_piece3():
         supprimeNotif()
         bool_piece3 = "Inactive"
 
+#PIECE ------------------------------------------------------------------------------------------------------------------------- #PIECE
 #salle de musique du manoir
 def piece4():
     global can1, can2, notif, image_fond
@@ -362,21 +368,6 @@ def reset_piece4():
         supprimeNotif()
         bool_piece4 = "Inactive"
 
-def clique(event):
-    global bool_clic2, bool_clic4, notif ,bool_intervention
-    if 293<event.x<335 and 316<event.y<436 :
-        notif("Salut ! Je m'appelle Xavier , vers 19h j'etais à mon club de lecture\n On vient tout juste de commencer le dernier tome de Game Of Throne ! ","white")
-
-    if 399<event.x<446 and 304<event.y<442 :
-        notif("Je suis Mark Armeau ,\nhier à 19h je suis aller boire un verre pour me changer les idées.","white")
-
-    if 535<event.x<572 and 316<event.y<436 and bool_clic2==False :
-        notif("Enchantée , je suis Sophie . Hier , lors de cet effroyable incident ,\n j'etait invitée a un bal dansant...\n d'ailleurs euh... \n Non rien oubliez .","white")
-        bool_intervention=True
-
-    if 734<event.x<784 and 322<event.y<433 and bool_clic4==False :
-        notif("Bonjour ! Je m'appelle Martine , hier , j'ai passer la journée avec mes petits-fils ", "white")
-
 #----- PARTIE EXECUTION DU CODE -----
 #creation fenetre graphique
 InterfaceJeu=Tk()
@@ -393,7 +384,14 @@ perso1=PhotoImage(file="images/perso/lunette.png")
 perso2=PhotoImage(file="images/perso/persovert.png")
 perso3=PhotoImage(file="images/perso/robeperso.png")
 perso4=PhotoImage(file="images/perso/filleperso.png")
+perso5=PhotoImage(file="images/robecluedo2.png")
+perso6=PhotoImage(file="images/filleperso2.png")
+
 fond=PhotoImage(file="images/bgmenu.png")
+fantome=PhotoImage(file="images/fantome.png")
+invitation=PhotoImage(file="images/feuille invitation.png")
+lettre=PhotoImage(file="images/feuille lettre.png")
+
 #lancement
 pygame.mixer.init()
 interface()
