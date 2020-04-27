@@ -389,7 +389,7 @@ perso6=PhotoImage(file="images/filleperso2.png")
 
 fond=PhotoImage(file="images/bgmenu.png")
 fantome=PhotoImage(file="images/fantome.png")
-invitation=PhotoImage(file="images/feuille invitation.png")
+invitation=PhotoImage(file="images/feuille invitation .png")
 lettre=PhotoImage(file="images/feuille lettre.png")
 
 #lancement
