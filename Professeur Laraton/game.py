@@ -211,7 +211,8 @@ def voir1():
     if bool_lettre==True:
         can1.create_image(300,400,tags="lettre",image=lettre)
         fantome1("\t\t Elle aurais reçu une lettre de menace. Mais pourquoi?\n\t\t Allons parler à Martine pour plus d'informations. ")
-
+    '''if coffre_actif==True:
+        can1.create_image(300,400)'''
 #PIECE ------------------------------------------------------------------------------------------------------------------------- #PIECE
 #hall du manoir
 def piece1():
@@ -360,60 +361,139 @@ def piece4():
 
 #EVENTS LIÉS AU COFFRE
 def coffre(mode): #le coffre est l'énigme de la piece, a initialisation du coffre, b actualisation du coffre
-    global coffre_actif, code_coffre
+    global coffre_actif, code_coffre, position_coffre, case_code
+    global chiffre0,chiffre1,chiffre2,chiffre3
     if mode == "a":
         code_coffre = [0,0,0,0]
+        position_coffre=0
+
+        #boutons crées ici pour éviter qu'ils ne soient doubles, le mode a étant l'initialisation, il s'applique uniquement au premier appel.
+        haut_code=Button(InterfaceJeu, text="↑", command=lambda: inc_coffre(position_coffre,"inc"))
+        haut_code.place(x=435,y=515)
+        bas_code=Button(InterfaceJeu, text="↓", command=lambda: inc_coffre(position_coffre,"dec"))
+        bas_code.place(x=435,y=545)
+        case_code=Button(InterfaceJeu, text="→", command=lambda: inc_coffre(position_coffre,"change"))
+        case_code.place(x=345,y=565)
+        valid_code=Button(InterfaceJeu, text='✅', command=lambda: checkCoffre())
+        valid_code.place(x=460,y=530)
+
     else:
         print(code_coffre[0])
         can2.delete('alert')
 
     if coffre_actif == True: #si le coffre est encore actif quand on repasse après
         can2.delete('coffre') #on sort des interactions du coffre (textes...)
-        haut_code0.place_forget()
-        bas_code0.place_forget()
+
+        #on les recrées pour être sûr qu'ils existent.... j'avais pas d'autre idée.
+        # EDIT : ça marche pas trouver solution pour supprimer les boutons
+        haut_code=Button(InterfaceJeu, text="↑", command=lambda: inc_coffre(position_coffre,"inc"))
+        haut_code.place(x=435,y=515)
+        bas_code=Button(InterfaceJeu, text="↓", command=lambda: inc_coffre(position_coffre,"dec"))
+        bas_code.place(x=435,y=545)
+        case_code=Button(InterfaceJeu, text="→", command=lambda: inc_coffre(position_coffre,"change"))
+        case_code.place(x=345,y=565)
+        valid_code=Button(InterfaceJeu, text='✅', command=lambda: checkCoffre())
+        valid_code.place(x=460,y=530)
+
+        haut_code.place_forget()
+        bas_code.place_forget()
+        case_code.place_forget()
+        valid_code.place_forget()
         print('courgette')
         coffre_actif = False
     else:
         can2.create_text(350,40,text="Tapez le code.",font=("Tahoma",18),fill="white",tags='coffre')
-        can2.create_text(350,65,text=code_coffre[0],font=("Tahoma",16),fill="white",tags='coffre')
+        can2.create_text(350,65,text=code_coffre[0],font=("Tahoma",16),fill="white",tags=('coffre','chiffre0')) #test avec 2 tags dont un pour appliquer couleut txt spécifiquement
         can2.create_text(370,75,text=code_coffre[1],font=("Tahoma",16),fill="white",tags='coffre')
         can2.create_text(390,65,text=code_coffre[2],font=("Tahoma",16),fill="white",tags='coffre')
         can2.create_text(410,75,text=code_coffre[3],font=("Tahoma",16),fill="white",tags='coffre')
 
-        haut_code0=Button(InterfaceJeu, text="↑", command=lambda: inc_coffre(0,"inc"))
-        haut_code0.place(x=350,y=515)
-        bas_code0=Button(InterfaceJeu, text="↓", command=lambda: inc_coffre(0,"dec"))
-        bas_code0.place(x=350,y=545)
 
-def inc_coffre(nb_coffre, incdec): #1er arg position liste code; 2eme arg increm ou decrem
-    global code_coffre
-    if code_coffre[nb_coffre] < 10 and code_coffre[nb_coffre] > -1:
-        if incdec == 'inc' and code_coffre[nb_coffre] < 10:
+
+def inc_coffre(nb_coffre, incdec): #1er arg position liste code; 2eme arg increm ou decrem ou change pour décaler input
+    global code_coffre, position_coffre, case_code
+    global chiffre0, chiffre1, chiffre2, chiffre3
+
+    if incdec == 'inc':
+        if code_coffre[nb_coffre] < 9:
+            can2.delete('coffre')
             code_coffre[nb_coffre]+=1
             print(code_coffre[nb_coffre])
-            can2.delete('coffre')
             coffre("b")
-        elif incdec == 'dec' and code_coffre[nb_coffre] > -1:
-            code_coffre[nb_coffre] = code_coffre[nb_coffre] - 1
-            print("con")
-            can2.delete('coffre')
-            coffre("b")
-    else:
-        if code_coffre[nb_coffre] == -1:
-            code_coffre[nb_coffre] = 0
-            coffre("b")
-        if code_coffre[nb_coffre] == 10:
+        else:
             code_coffre[nb_coffre] = 9
             coffre("b")
+    elif incdec == 'dec':
+        if code_coffre[nb_coffre] > 0:
+            can2.delete('coffre')
+            code_coffre[nb_coffre] = code_coffre[nb_coffre] - 1
+            coffre("b")
+        else:
+            code_coffre[nb_coffre] = 0
+            coffre("b")
+    elif incdec == 'change':
+        print("oh")
+        if position_coffre < 3:
+            position_coffre = position_coffre + 1
+            # je redéfinis à chaque fois la position du bouton pour le déplacer sous le chiffre correspondant
+            # voir pour descendre le bouton
+            if position_coffre == 0:
+                x = 345
+                y = 565
+                case_code.place_configure(x=x, y=y)
+            elif position_coffre == 1:
+                x = 365
+                y = 565
+                case_code.place_configure(x=x, y=y)
+                can2.itemconfig('chiffre0',fill='red')
+            elif position_coffre == 2:
+                x = 385
+                y = 565
+                case_code.place_configure(x=x, y=y)
+            elif position_coffre == 3:
+                x = 405
+                y = 565
+                case_code.place_configure(x=x, y=y)
+            else:
+                print('salut')
+
+            can2.delete('coffre')
+            coffre("b")
+        else:
+            can2.delete("coffre")
+            position_coffre = -1
+            inc_coffre(position_coffre,"change")
+            coffre('b')
+    else:
         can2.create_text(370,90,text='Un chiffre entre 0 et 9', fill="white",tags='alert')
+    print("ehoh")
+
+def checkCoffre(): #fonction appelée pour vérifier le bon résultat du code tapé, n'a besoin que des données du code
+    global code_coffre
+    passedcode = 0 #j'ai choisi l'incrémentation pour pouvoir valider en couleur dans le désordre
+    if code_coffre[0] == 2:
+        passedcode += 1
+        #changer couleur chiffre réussi, la couleur est encore à appliquer, ne marche pas
+    if code_coffre[1] == 8:
+        passedcode +=1
+    if code_coffre[2] == 5:
+        passedcode +=1
+    if code_coffre[3] == 3:
+        passedcode +=1
+
+    if passedcode == 4:
+        print('vous avez gagné')
+    else:
+        print("non, perdu !")
 
 def reset_piece4():
     global bdroit_piece4, supprimeNotif
     global bool_piece4, coffre_actif
     if bool_piece4 == "True" or bool_piece4 == "Inactive" :
         bdroit_piece4.place_forget()
-        coffre_actif=True
-        coffre("b")
+        if coffre_actif == False:
+            coffre_actif=True
+            coffre("b")
         supprimeNotif()
         bool_piece4 = "Inactive"
 
