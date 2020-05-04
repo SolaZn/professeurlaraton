@@ -21,7 +21,7 @@ def interface():
 
     texte_global=can2.create_text(220,75,text="",fill="black", anchor="nw")
     image_fond=can1.create_image(0,0, anchor="nw")
-    zoom_fond=can1.create_image(230,210, anchor="nw")
+    zoom_fond=can1.create_image(0,0, anchor="nw")
     can1.itemconfig(image_fond, image=fond)
 
     #boutons
@@ -567,8 +567,8 @@ fond=PhotoImage(file="images/bgmenu.png")
 fantome=PhotoImage(file="images/fantome.png")
 invitation=PhotoImage(file="images/feuille invitation .png")
 lettre=PhotoImage(file="images/feuille lettre.png")
-coffre_ferme=PhotoImage(file="images/background-4,1.png")
-coffre_ouvert_img=PhotoImage(file="images/background-4,2.png")
+coffre_ferme=PhotoImage(file="images/background-4,2.png")
+coffre_ouvert_img=PhotoImage(file="images/background-4,1.png")
 transparent=PhotoImage(file="images/transparent.png")
 
 #lancement
