@@ -19,7 +19,7 @@ def interface():
     can2=Canvas(InterfaceJeu,width=852,height=320,bg='black')
     can2.place(x=0,y=480)
 
-    texte_global=can2.create_text(220,75,text="",fill="black")
+    texte_global=can2.create_text(220,75,text="",fill="black", anchor="nw")
     image_fond=can1.create_image(0,0, anchor="nw")
     zoom_fond=can1.create_image(230,210, anchor="nw")
     can1.itemconfig(image_fond, image=fond)
@@ -74,9 +74,18 @@ def reset_interface(): #fonction utilisée pour changer de scène
 
 #INTERACTIONS ---------------------------------------------------------------------------------- #INTERACTIONS
     #GLOBALES#
-def notif(texte,color): #est appelée lorsqu'il faut afficher un texte à l'utilisateur
+def notif(texte,color,size="normal",posx_txt=220,posy_txt=75,notif_type="discussion"): #est appelée lorsqu'il faut afficher un texte non spécial (une notification en gros) à l'utilisateur
     global can1, can2, texte_global,notif_in_use
-    can2.itemconfig(texte_global,text=texte,fill=color)
+    font_size = 4
+    if size == "normal":
+        font_size = 12
+    elif size == "small":
+        font_size = 8
+    elif size == "big":
+        font_size = 18
+
+    can2.itemconfig(texte_global,text=texte,fill=color,font=("TkDefaultFont",font_size),tags=notif_type)
+    can2.coords(texte_global,posy_txt,posy_txt)
     notif_in_use = True
 
 def boutonNotif(): #est appelée en même temps pour afficher le bouton de confirmation de lecture
@@ -84,7 +93,7 @@ def boutonNotif(): #est appelée en même temps pour afficher le bouton de confi
     bv = True
     if notif_in_use == True:
         bvalidation=Button(InterfaceJeu, text="OK!", command=supprimeNotif)
-        bvalidation.place(x=205,y=575)
+        bvalidation.place(x=205,y=620)
     else:
         print('EXCEPTION')
 
@@ -170,9 +179,12 @@ def fantome1(texte):
     bool_fantome=True
 
 def clic_coffre(event) :
-    global can1,bool_piece4, trouver
-    if  0< event.x<73   and  257<event.y<301:
-        trouver()
+    global can1,bool_piece4,trouver,coffre_ouvert
+    if  0< event.x<73   and  257<event.y<301: #Si on est dans la zone et que le coffre n'a pas été ouvert
+        if coffre_ouvert == False:
+            trouver()
+        elif coffre_ouvert == True:
+            notif("Le coffre a déjà été ouvert","green") #marche pas, trouver solution...
     else:
         print("stop")
 
@@ -338,7 +350,7 @@ def piece3():
     if bool_clic2==True:
         can1.create_image(600,300,tags="robe",image=perso5)
 
-        #fond de la piece
+    #fond de la piece
     can1.itemconfig(image_fond,image=fond_piece3)
     can1.focus_set()
     can1.bind("<ButtonPress-1>",clic2)
@@ -378,11 +390,13 @@ def piece4():
     can1.bind("<ButtonPress-1>",clic_coffre) #les évenements cliqués seront opposés à la matrice clic_coffre()
 
     if coffre_actif == True and coffre_ouvert == False:
-        notif("Le coffre est déjà sur la table","white")
+        notif("Le coffre est déjà sur la table","white",notif_type="alert")
+        '''fantome1("Trouvons le code !")''' #bloque l'affichage de l'alerte
         can1.itemconfig(zoom_fond,image=coffre_ferme)
         coffre("init")
     if coffre_ouvert == True:
-        notif("Le coffre a déjà été ouvert","green") #TROUVER UN MOYEN DE MODIFIER LA TAILLE DES NOTIFS C TROP PETIT (ITEM CONFIG ?, IL Y A UN TUPLE A FAIRE, voir si on peut laisser la police système et changer la taille à sa guise)
+        notif("Le coffre a déjà été ouvert","green",size="big",notif_type="alert")
+        '''fantome1("Tu devrais jeter un oeil ailleurs")  #fantome notifie utilisateur de la fin de l'énigme''' #à vérifier mais ça bloque l'affichage des alertes notifs
 
 #EVENTS LIÉS AU COFFRE
 def coffre(mode): #le coffre est l'énigme de la piece, init initialisation du coffre, refresh actualisation du coffre, delete suppression
@@ -407,11 +421,11 @@ def coffre(mode): #le coffre est l'énigme de la piece, init initialisation du c
 
         can2.delete('coffre') #on delete les éventuels textes restants de la dernière initialisation
 
-        can2.create_text(350,40,text="Tapez le code.",font=("Tahoma",18),fill="white",tags='coffre')
-        can2.create_text(350,65,text=code_coffre[0],font=("Tahoma",16),fill="white",tags=('coffre','chiffre0')) #test avec 2 tags dont un pour appliquer couleut txt spécifiquement
-        can2.create_text(370,75,text=code_coffre[1],font=("Tahoma",16),fill="white",tags='coffre')
-        can2.create_text(390,65,text=code_coffre[2],font=("Tahoma",16),fill="white",tags='coffre')
-        can2.create_text(410,75,text=code_coffre[3],font=("Tahoma",16),fill="white",tags='coffre')
+        can2.create_text(350,40,text="Tapez le code.",font=("TkDefaultFont",18),fill="white",tags='coffre')
+        can2.create_text(350,65,text=code_coffre[0],font=("TkDefaultFont",16),fill="white",tags=('coffre','chiffre0')) #test avec 2 tags dont un pour appliquer couleut txt spécifiquement
+        can2.create_text(370,75,text=code_coffre[1],font=("TkDefaultFont",16),fill="white",tags='coffre')
+        can2.create_text(390,65,text=code_coffre[2],font=("TkDefaultFont",16),fill="white",tags='coffre')
+        can2.create_text(410,75,text=code_coffre[3],font=("TkDefaultFont",16),fill="white",tags='coffre')
 
     elif mode == "delete":
         print(code_coffre[0])
@@ -427,11 +441,11 @@ def coffre(mode): #le coffre est l'énigme de la piece, init initialisation du c
         if coffre_actif == True:
             can2.delete('coffre') #on sort des interactions du coffre (textes...)
 
-            can2.create_text(350,40,text="Tapez le code.",font=("Tahoma",18),fill="white",tags='coffre')
-            can2.create_text(350,65,text=code_coffre[0],font=("Tahoma",16),fill="white",tags=('coffre','chiffre0')) #test avec 2 tags dont un pour appliquer couleut txt spécifiquement
-            can2.create_text(370,75,text=code_coffre[1],font=("Tahoma",16),fill="white",tags='coffre')
-            can2.create_text(390,65,text=code_coffre[2],font=("Tahoma",16),fill="white",tags='coffre')
-            can2.create_text(410,75,text=code_coffre[3],font=("Tahoma",16),fill="white",tags='coffre')
+            can2.create_text(350,40,text="Tapez le code.",font=("TkDefaultFont",18),fill="white",tags='coffre')
+            can2.create_text(350,65,text=code_coffre[0],font=("TkDefaultFont",16),fill="white",tags=('coffre','chiffre0')) #test avec 2 tags dont un pour appliquer couleut txt spécifiquement
+            can2.create_text(370,75,text=code_coffre[1],font=("TkDefaultFont",16),fill="white",tags='coffre')
+            can2.create_text(390,65,text=code_coffre[2],font=("TkDefaultFont",16),fill="white",tags='coffre')
+            can2.create_text(410,75,text=code_coffre[3],font=("TkDefaultFont",16),fill="white",tags='coffre')
 
 def inc_coffre(nb_coffre, incdec): #1er arg position liste code; 2eme arg increm ou decrem ou change pour décaler input
     global code_coffre, position_coffre, case_code
