@@ -4,9 +4,11 @@ import pygame
 #interface globale du jeu
 def interface():
     global can1, can2, event, start, image_fond
+    #booléens des évents du jeu
     global bool_piece1,bool_piece2,bool_piece3,bool_piece4
     global bool_bquitter, bool_clic2, bool_clic3, bool_clic4, bool_clic5, bool_fantome
-    global bool_intervention, bool_invitation, bool_lettre, bv, coffre_actif
+    global bool_intervention, bool_invitation, bool_lettre, bv, coffre_actif, coffre_ouvert
+    #booléens de l'interface
     global texte_global, notif_in_use, fondmenu, quitter, reglesb
 
     #2 canvas sont nécessaires
@@ -48,6 +50,7 @@ def interface():
     bool_lettre=False
     bool_intervention=False
     coffre_actif=False
+    coffre_ouvert=False
     '''
     pygame.mixer.music.load("nyan.mp3") # import du fichier
     pygame.mixer.music.play() # on joue le fichier
@@ -165,11 +168,14 @@ def fantome1(texte):
     bquitter1.place(x=745,y=645)
     bool_fantome=True
 
-def clic1(event) :
-    global can1,bool_piece3
-    if  0< event.x<1000  and  0<event.y<1000:
-        print("couou")
+def clic_coffre(event) :
+    global can1,bool_piece4, trouver
 
+    if  0< event.x<73   and  257<event.y<301:
+        print(event.x)
+        print(event.y)
+        print("trouvé")
+        trouver()
     else:
         print("stop")
 
@@ -197,14 +203,17 @@ def clic4(event):
 
 def trouver():
         global bvoir1,notif
-        notif("tu as trouvé quelque chose veux-tu le voir?","white")
+        notif("tu as trouvé quelque chose, veux-tu le voir?","white")
         bvoir1=Button(InterfaceJeu, text="voir", command=voir1)
         bvoir1.place(x=745,y=645)
 
 def voir1():
-    global bvoir1,bool_clic2,can1,fantome1,invitation,bool_clic4,lettre,bool_invitation,bool_lettre
+    global bvoir1,bool_clic2,can1,fantome1,invitation,bool_clic4,lettre,bool_invitation,bool_lettre, coffre_ouvert
     bvoir1.place_forget()
     notif(" ","black")
+    '''if coffre_ouvert == False:
+        can1.create_image(300,400,tags="coffre",image=coffre_ferme)''' #je cherche l'image du coffre, je reviens...
+
     if bool_invitation==True:
         can1.create_image(300,400,tags="invitation",image=invitation)
         fantome1 ("\t\tbravo tu as trouvé l'invitation allons parler à sophie \n\t\t pour plus d'informations. ")
@@ -236,6 +245,11 @@ def piece1():
     bdroit_piece1.place(x=775,y=575)
     bgauche_piece1=Button(InterfaceJeu, text="←", command=piece4)
     bgauche_piece1.place(x=735,y=575)
+
+    can1.create_image(314,380,tags="perso",image=perso1)
+    can1.create_image(420,380,tags="perso",image=perso2)
+    can1.create_image(550,380,tags="perso1",image=perso3)
+    can1.create_image(760,380,tags="perso2",image=perso4)
 
     if bool_clic2==False:
         can1.create_image(550,380,tags="perso1",image=perso3)
@@ -293,12 +307,8 @@ def piece2():
     bbas_piece2=Button(InterfaceJeu, text="↓", command=piece1)
     bbas_piece2.place(x=755,y=575)
 
-    matrice_piece1()
     can1.focus_set() #test clic zones
     can1.bind("<ButtonPress-1>",clic4)
-
-    fantome1("test")
-
 
     #fond de la piece
     can1.itemconfig(image_fond,image=fond_piece2)
@@ -325,8 +335,14 @@ def piece3():
     bgauche_piece3=Button(InterfaceJeu, text="←", command=piece1)
     bgauche_piece3.place(x=735,y=575)
 
-    #fond de la piece
+    if bool_clic2==True:
+        can1.create_image(600,300,tags="robe",image=perso5)
+
+        #fond de la piece
     can1.itemconfig(image_fond,image=fond_piece3)
+    can1.focus_set()
+    can1.bind("<ButtonPress-1>",clic2)
+
 
 def reset_piece3():
     global bgauche_piece3, supprimeNotif
@@ -335,12 +351,16 @@ def reset_piece3():
         bgauche_piece3.place_forget()
         supprimeNotif()
         bool_piece3 = "Inactive"
+    if bool_clic2==True:
+        can1.delete("robe")
 
 #PIECE ------------------------------------------------------------------------------------------------------------------------- #PIECE
 #salle de musique du manoir
 def piece4():
     global can1, can2, notif, image_fond
     global bdroit_piece4, bool_piece4,clic2,clic3,bool_clic2,perso5
+    global coffre_ouvert
+
     bool_piece4="True"
 
     #boutons de l'interface dans la piece
@@ -355,17 +375,23 @@ def piece4():
     #fond de la piece
     can1.itemconfig(image_fond,image=fond_piece4)
     can1.focus_set()
-    can1.bind("<ButtonPress-1>",clic2)
+    can1.bind("<ButtonPress-1>",clic_coffre)
 
-    coffre("a")
+    if coffre_ouvert == True:
+        print("Le coffre est déjà ouvert")
+    else:
+        coffre("init")
 
 #EVENTS LIÉS AU COFFRE
-def coffre(mode): #le coffre est l'énigme de la piece, a initialisation du coffre, b actualisation du coffre
-    global coffre_actif, code_coffre, position_coffre, case_code
+def coffre(mode): #le coffre est l'énigme de la piece, init initialisation du coffre, refresh actualisation du coffre, delete suppression
+    global coffre_actif, code_coffre, position_coffre, case_code, haut_code, bas_code, valid_code
     global chiffre0,chiffre1,chiffre2,chiffre3
-    if mode == "a":
+    global coffre_actif
+
+    if mode == "init":
         code_coffre = [0,0,0,0]
         position_coffre=0
+        coffre_actif = True
 
         #boutons crées ici pour éviter qu'ils ne soient doubles, le mode a étant l'initialisation, il s'applique uniquement au premier appel.
         haut_code=Button(InterfaceJeu, text="↑", command=lambda: inc_coffre(position_coffre,"inc"))
@@ -377,49 +403,44 @@ def coffre(mode): #le coffre est l'énigme de la piece, a initialisation du coff
         valid_code=Button(InterfaceJeu, text='✅', command=lambda: checkCoffre())
         valid_code.place(x=460,y=530)
 
-    else:
-        print(code_coffre[0])
-        can2.delete('alert')
+        can2.delete('coffre') #on delete les éventuels textes restants de la dernière initialisation
 
-    if coffre_actif == True: #si le coffre est encore actif quand on repasse après
-        can2.delete('coffre') #on sort des interactions du coffre (textes...)
-
-        #on les recrées pour être sûr qu'ils existent.... j'avais pas d'autre idée.
-        # EDIT : ça marche pas trouver solution pour supprimer les boutons
-        haut_code=Button(InterfaceJeu, text="↑", command=lambda: inc_coffre(position_coffre,"inc"))
-        haut_code.place(x=435,y=515)
-        bas_code=Button(InterfaceJeu, text="↓", command=lambda: inc_coffre(position_coffre,"dec"))
-        bas_code.place(x=435,y=545)
-        case_code=Button(InterfaceJeu, text="→", command=lambda: inc_coffre(position_coffre,"change"))
-        case_code.place(x=345,y=565)
-        valid_code=Button(InterfaceJeu, text='✅', command=lambda: checkCoffre())
-        valid_code.place(x=460,y=530)
-
-        haut_code.place_forget()
-        bas_code.place_forget()
-        case_code.place_forget()
-        valid_code.place_forget()
-        print('courgette')
-        coffre_actif = False
-    else:
         can2.create_text(350,40,text="Tapez le code.",font=("Tahoma",18),fill="white",tags='coffre')
         can2.create_text(350,65,text=code_coffre[0],font=("Tahoma",16),fill="white",tags=('coffre','chiffre0')) #test avec 2 tags dont un pour appliquer couleut txt spécifiquement
         can2.create_text(370,75,text=code_coffre[1],font=("Tahoma",16),fill="white",tags='coffre')
         can2.create_text(390,65,text=code_coffre[2],font=("Tahoma",16),fill="white",tags='coffre')
         can2.create_text(410,75,text=code_coffre[3],font=("Tahoma",16),fill="white",tags='coffre')
 
+    elif mode == "delete":
+        print(code_coffre[0])
+        can2.delete('alert')
+        can2.delete('coffre')
 
+        haut_code.place_forget()
+        bas_code.place_forget()
+        case_code.place_forget()
+        valid_code.place_forget()
+
+    elif mode == "refresh": #si le coffre est encore actif quand on repasse après
+        if coffre_actif == True:
+            can2.delete('coffre') #on sort des interactions du coffre (textes...)
+
+            can2.create_text(350,40,text="Tapez le code.",font=("Tahoma",18),fill="white",tags='coffre')
+            can2.create_text(350,65,text=code_coffre[0],font=("Tahoma",16),fill="white",tags=('coffre','chiffre0')) #test avec 2 tags dont un pour appliquer couleut txt spécifiquement
+            can2.create_text(370,75,text=code_coffre[1],font=("Tahoma",16),fill="white",tags='coffre')
+            can2.create_text(390,65,text=code_coffre[2],font=("Tahoma",16),fill="white",tags='coffre')
+            can2.create_text(410,75,text=code_coffre[3],font=("Tahoma",16),fill="white",tags='coffre')
 
 def inc_coffre(nb_coffre, incdec): #1er arg position liste code; 2eme arg increm ou decrem ou change pour décaler input
     global code_coffre, position_coffre, case_code
     global chiffre0, chiffre1, chiffre2, chiffre3
-
+    #la fonction gère le système de "déplacement" et de "compteur" du code
     if incdec == 'inc':
         if code_coffre[nb_coffre] < 9:
             can2.delete('coffre')
             code_coffre[nb_coffre]+=1
             print(code_coffre[nb_coffre])
-            coffre("b")
+            coffre("refresh")
         else:
             code_coffre[nb_coffre] = 9
             coffre("b")
@@ -427,10 +448,10 @@ def inc_coffre(nb_coffre, incdec): #1er arg position liste code; 2eme arg increm
         if code_coffre[nb_coffre] > 0:
             can2.delete('coffre')
             code_coffre[nb_coffre] = code_coffre[nb_coffre] - 1
-            coffre("b")
+            coffre("refresh")
         else:
             code_coffre[nb_coffre] = 0
-            coffre("b")
+            coffre("refresh")
     elif incdec == 'change':
         print("oh")
         if position_coffre < 3:
@@ -458,18 +479,19 @@ def inc_coffre(nb_coffre, incdec): #1er arg position liste code; 2eme arg increm
                 print('salut')
 
             can2.delete('coffre')
-            coffre("b")
+            coffre("refresh")
         else:
             can2.delete("coffre")
             position_coffre = -1
             inc_coffre(position_coffre,"change")
-            coffre('b')
+            coffre('refresh')
     else:
         can2.create_text(370,90,text='Un chiffre entre 0 et 9', fill="white",tags='alert')
     print("ehoh")
 
 def checkCoffre(): #fonction appelée pour vérifier le bon résultat du code tapé, n'a besoin que des données du code
-    global code_coffre
+    global code_coffre, coffre_ouvert
+
     passedcode = 0 #j'ai choisi l'incrémentation pour pouvoir valider en couleur dans le désordre
     if code_coffre[0] == 2:
         passedcode += 1
@@ -483,6 +505,7 @@ def checkCoffre(): #fonction appelée pour vérifier le bon résultat du code ta
 
     if passedcode == 4:
         print('vous avez gagné')
+        coffre_ouvert = True
     else:
         print("non, perdu !")
 
@@ -491,9 +514,8 @@ def reset_piece4():
     global bool_piece4, coffre_actif
     if bool_piece4 == "True" or bool_piece4 == "Inactive" :
         bdroit_piece4.place_forget()
-        if coffre_actif == False:
-            coffre_actif=True
-            coffre("b")
+        if coffre_actif == True:
+            coffre("delete")
         supprimeNotif()
         bool_piece4 = "Inactive"
 
@@ -520,6 +542,7 @@ fond=PhotoImage(file="images/bgmenu.png")
 fantome=PhotoImage(file="images/fantome.png")
 invitation=PhotoImage(file="images/feuille invitation .png")
 lettre=PhotoImage(file="images/feuille lettre.png")
+'''coffre_ferme=PhotoImage(file="images/coffre")'''
 
 #lancement
 pygame.mixer.init()
