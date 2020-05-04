@@ -74,9 +74,11 @@ def reset_interface(): #fonction utilisée pour changer de scène
 
 #INTERACTIONS ---------------------------------------------------------------------------------- #INTERACTIONS
     #GLOBALES#
-def notif(texte,color,size="normal",posx_txt=220,posy_txt=75,notif_type="discussion"): #est appelée lorsqu'il faut afficher un texte non spécial (une notification en gros) à l'utilisateur
+def notif(texte,color,size="normal",posx_txt=220,posy_txt=75,notif_type="discussion",police="TkDefaultFont"): #est appelée lorsqu'il faut afficher un texte non spécial (une notification en gros) à l'utilisateur
+    #color : spécifier une couleur en anglais sous forme de string; posx_txt/posy_txt : position en x et y du texte, notif_type : crée un tag pour rendre la suppression plus facile
+    #police : donne la police spécifiée au texte, sinon police système
     global can1, can2, texte_global,notif_in_use
-    font_size = 4
+    font_size = 25
     if size == "normal":
         font_size = 12
     elif size == "small":
@@ -84,7 +86,7 @@ def notif(texte,color,size="normal",posx_txt=220,posy_txt=75,notif_type="discuss
     elif size == "big":
         font_size = 18
 
-    can2.itemconfig(texte_global,text=texte,fill=color,font=("TkDefaultFont",font_size),tags=notif_type)
+    can2.itemconfig(texte_global,text=texte,fill=color,font=(police,font_size),tags=notif_type)
     can2.coords(texte_global,posy_txt,posy_txt)
     notif_in_use = True
 
@@ -184,7 +186,7 @@ def clic_coffre(event) :
         if coffre_ouvert == False:
             trouver()
         elif coffre_ouvert == True:
-            notif("Le coffre a déjà été ouvert","green") #marche pas, trouver solution...
+            notif("Le coffre a déjà été ouvert","green")
     else:
         print("stop")
 
@@ -212,7 +214,7 @@ def clic4(event):
 
 def trouver():
         global bvoir1,notif
-        notif("tu as trouvé quelque chose, veux-tu le voir?","white")
+        notif("Tu as trouvé quelque chose, veux-tu le voir?","white")
         bvoir1=Button(InterfaceJeu, text="voir", command=voir1)
         bvoir1.place(x=745,y=645)
 
