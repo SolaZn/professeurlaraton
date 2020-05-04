@@ -3,7 +3,7 @@ import pygame
 
 #interface globale du jeu
 def interface():
-    global can1, can2, event, start, image_fond
+    global can1, can2, event, start, image_fond, zoom_fond
     #booléens des évents du jeu
     global bool_piece1,bool_piece2,bool_piece3,bool_piece4
     global bool_bquitter, bool_clic2, bool_clic3, bool_clic4, bool_clic5, bool_fantome
@@ -21,6 +21,7 @@ def interface():
 
     texte_global=can2.create_text(220,75,text="",fill="black")
     image_fond=can1.create_image(0,0, anchor="nw")
+    zoom_fond=can1.create_image(230,210, anchor="nw")
     can1.itemconfig(image_fond, image=fond)
 
     #boutons
@@ -89,11 +90,11 @@ def boutonNotif(): #est appelée en même temps pour afficher le bouton de confi
 
 def supprimeNotif(): #est appelée après l'usage du bouton pour enlever toute notif
     global bvalidation,notif, notif_in_use, bv
-    if notif_in_use == True and bv == True:
+    if notif_in_use == True:
         notif(" ","black")
-        print("Ici")
-        bvalidation.place_forget()
-        notif_in_use = False
+        if bv == True:
+            bvalidation.place_forget()
+    notif_in_use = False
 
 def clic(event): #recupère les positions obtenues par objectChecker()
     global clicX,clicY
@@ -170,11 +171,7 @@ def fantome1(texte):
 
 def clic_coffre(event) :
     global can1,bool_piece4, trouver
-
     if  0< event.x<73   and  257<event.y<301:
-        print(event.x)
-        print(event.y)
-        print("trouvé")
         trouver()
     else:
         print("stop")
@@ -208,11 +205,19 @@ def trouver():
         bvoir1.place(x=745,y=645)
 
 def voir1():
-    global bvoir1,bool_clic2,can1,fantome1,invitation,bool_clic4,lettre,bool_invitation,bool_lettre, coffre_ouvert
+    global bvoir1,bool_clic2,can1,fantome1,invitation,bool_clic4,lettre,bool_invitation,bool_lettre, coffre_ouvert, coffre_actif
+    global zoom_fond, bool_piece4
     bvoir1.place_forget()
     notif(" ","black")
-    '''if coffre_ouvert == False:
-        can1.create_image(300,400,tags="coffre",image=coffre_ferme)''' #je cherche l'image du coffre, je reviens...
+    if coffre_ouvert == False and bool_piece4 == "True":
+        notif("Vous avez trouvé un coffre","white")
+        can1.itemconfig(zoom_fond,image=coffre_ferme)
+        if coffre_ouvert == True:
+            notif("Le coffre est déjà ouvert","white")
+        elif coffre_actif == False:
+            coffre("init")
+        elif coffre_actif == True:
+            coffre("refresh")
 
     if bool_invitation==True:
         can1.create_image(300,400,tags="invitation",image=invitation)
@@ -220,8 +225,7 @@ def voir1():
     if bool_lettre==True:
         can1.create_image(300,400,tags="lettre",image=lettre)
         fantome1("\t\t Elle aurais reçu une lettre de menace. Mais pourquoi?\n\t\t Allons parler à Martine pour plus d'informations. ")
-    '''if coffre_actif==True:
-        can1.create_image(300,400)'''
+
 #PIECE ------------------------------------------------------------------------------------------------------------------------- #PIECE
 #hall du manoir
 def piece1():
@@ -268,10 +272,6 @@ def piece1():
 
     #fond de la piece
     can1.itemconfig(image_fond,image=fond_piece1)
-
-    #interactions de la piece
-
-        #on va opposer l'event à la matrice
 
 def matrice_piece1():
     #tableau des positions des persos
@@ -357,7 +357,7 @@ def reset_piece3():
 #PIECE ------------------------------------------------------------------------------------------------------------------------- #PIECE
 #salle de musique du manoir
 def piece4():
-    global can1, can2, notif, image_fond
+    global can1, can2, notif, image_fond, zoom_fond
     global bdroit_piece4, bool_piece4,clic2,clic3,bool_clic2,perso5
     global coffre_ouvert
 
@@ -375,12 +375,14 @@ def piece4():
     #fond de la piece
     can1.itemconfig(image_fond,image=fond_piece4)
     can1.focus_set()
-    can1.bind("<ButtonPress-1>",clic_coffre)
+    can1.bind("<ButtonPress-1>",clic_coffre) #les évenements cliqués seront opposés à la matrice clic_coffre()
 
-    if coffre_ouvert == True:
-        print("Le coffre est déjà ouvert")
-    else:
+    if coffre_actif == True and coffre_ouvert == False:
+        notif("Le coffre est déjà sur la table","white")
+        can1.itemconfig(zoom_fond,image=coffre_ferme)
         coffre("init")
+    if coffre_ouvert == True:
+        notif("Le coffre a déjà été ouvert","green") #TROUVER UN MOYEN DE MODIFIER LA TAILLE DES NOTIFS C TROP PETIT (ITEM CONFIG ?, IL Y A UN TUPLE A FAIRE, voir si on peut laisser la police système et changer la taille à sa guise)
 
 #EVENTS LIÉS AU COFFRE
 def coffre(mode): #le coffre est l'énigme de la piece, init initialisation du coffre, refresh actualisation du coffre, delete suppression
@@ -393,7 +395,7 @@ def coffre(mode): #le coffre est l'énigme de la piece, init initialisation du c
         position_coffre=0
         coffre_actif = True
 
-        #boutons crées ici pour éviter qu'ils ne soient doubles, le mode a étant l'initialisation, il s'applique uniquement au premier appel.
+        #boutons crées ici pour éviter qu'ils ne soient doubles, le mode init étant l'initialisation, il s'applique uniquement au premier appel.
         haut_code=Button(InterfaceJeu, text="↑", command=lambda: inc_coffre(position_coffre,"inc"))
         haut_code.place(x=435,y=515)
         bas_code=Button(InterfaceJeu, text="↓", command=lambda: inc_coffre(position_coffre,"dec"))
@@ -462,19 +464,23 @@ def inc_coffre(nb_coffre, incdec): #1er arg position liste code; 2eme arg increm
                 x = 345
                 y = 565
                 case_code.place_configure(x=x, y=y)
+                supprimeNotif()
             elif position_coffre == 1:
                 x = 365
                 y = 565
                 case_code.place_configure(x=x, y=y)
-                can2.itemconfig('chiffre0',fill='red')
+                can2.itemconfig('chiffre0',fill='red') #trouver moyen pour couleur
+                supprimeNotif()
             elif position_coffre == 2:
                 x = 385
                 y = 565
                 case_code.place_configure(x=x, y=y)
+                supprimeNotif()
             elif position_coffre == 3:
                 x = 405
                 y = 565
                 case_code.place_configure(x=x, y=y)
+                supprimeNotif()
             else:
                 print('salut')
 
@@ -490,7 +496,7 @@ def inc_coffre(nb_coffre, incdec): #1er arg position liste code; 2eme arg increm
     print("ehoh")
 
 def checkCoffre(): #fonction appelée pour vérifier le bon résultat du code tapé, n'a besoin que des données du code
-    global code_coffre, coffre_ouvert
+    global code_coffre, coffre_ouvert, zoom_fond, can1
 
     passedcode = 0 #j'ai choisi l'incrémentation pour pouvoir valider en couleur dans le désordre
     if code_coffre[0] == 2:
@@ -504,18 +510,23 @@ def checkCoffre(): #fonction appelée pour vérifier le bon résultat du code ta
         passedcode +=1
 
     if passedcode == 4:
-        print('vous avez gagné')
+        notif("Vous avez trouvé le code !","green")
         coffre_ouvert = True
+        coffre_actif = False
+
+        can1.itemconfig(zoom_fond,image=coffre_ouvert_img)
+        coffre("delete")
     else:
-        print("non, perdu !")
+        notif("Cela n'a pas l'air de marcher","red")
 
 def reset_piece4():
-    global bdroit_piece4, supprimeNotif
-    global bool_piece4, coffre_actif
+    global bdroit_piece4
+    global bool_piece4, coffre_actif, zoom_fond, can1
     if bool_piece4 == "True" or bool_piece4 == "Inactive" :
         bdroit_piece4.place_forget()
         if coffre_actif == True:
             coffre("delete")
+            can1.itemconfig(zoom_fond,image=transparent) #image transparente qui remplace le zoom
         supprimeNotif()
         bool_piece4 = "Inactive"
 
@@ -542,7 +553,9 @@ fond=PhotoImage(file="images/bgmenu.png")
 fantome=PhotoImage(file="images/fantome.png")
 invitation=PhotoImage(file="images/feuille invitation .png")
 lettre=PhotoImage(file="images/feuille lettre.png")
-'''coffre_ferme=PhotoImage(file="images/coffre")'''
+coffre_ferme=PhotoImage(file="images/background-4,1.png")
+coffre_ouvert_img=PhotoImage(file="images/background-4,2.png")
+transparent=PhotoImage(file="images/transparent.png")
 
 #lancement
 pygame.mixer.init()
