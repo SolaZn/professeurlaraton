@@ -526,7 +526,7 @@ def checkCoffre(): #fonction appelée pour vérifier le bon résultat du code ta
         passedcode +=1
 
     if passedcode == 4:
-        notif("Vous avez trouvé le code !","green")
+        notif("Vous avez trouvé le code !","green",size="big")
         coffre_ouvert = True
         coffre_actif = False
 
