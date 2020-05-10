@@ -9,7 +9,7 @@ def interface():
     global bool_bquitter, bool_clic2, bool_clic3, bool_clic4, bool_clic5, bool_fantome
     global bool_intervention, bool_invitation, bool_lettre, bv, coffre_actif, coffre_ouvert
     #booléens de l'interface
-    global texte_global, notif_in_use, fondmenu, quitter, reglesb
+    global texte_global, notif_in_use, fondmenu, quitter, reglesb,texte_global2
 
     #2 canvas sont nécessaires
         #premier canvas -> affichage de scene
@@ -23,6 +23,7 @@ def interface():
     image_fond=can1.create_image(0,0, anchor="nw")
     zoom_fond=can1.create_image(0,0, anchor="nw")
     can1.itemconfig(image_fond, image=fond)
+    texte_global2=can2.create_text(220,250,text="",fill="black")
 
     #boutons
     start=Button(InterfaceJeu, text="START", command=piece1)
@@ -128,6 +129,11 @@ def presentation_clic(event): #Interactions clic liées à l'arrivée du joueur 
         notif("Enchantée , je suis Sophie . Hier , lors de cet effroyable incident ,\n j'etait invitée a un bal dansant...\n d'ailleurs euh... \n Non rien oubliez .","white")
         boutonNotif()
         bool_intervention=True
+        bouton()
+        if n==2:
+            notif2("Objectif->Retrouver l'invitation de Sophie pour l'innocenter")
+            n+=1
+
 
     if 734<event.x<784 and 322<event.y<433 and bool_clic4==False :
         notif("Bonjour ! Je m'appelle Martine , hier , j'ai passer la journée avec mes petits-fils ", "white")
@@ -179,6 +185,21 @@ def fantome1(texte):
     bquitter1=Button(InterfaceJeu, text="suivant", command=quitter1)
     bquitter1.place(x=745,y=645)
     bool_fantome=True
+
+def bouton():
+    global bquitter1,quitter1
+    bquitter1=Button(InterfaceJeu, text="suivant", command=quitter1)
+    bquitter1.place(x=745,y=645)
+def notif2(texte):
+    global texte_global2,can2
+    can2.itemconfig(texte_global2,text=texte,fill="red")
+def objectif() :
+    global notif2,bool_intervention,bool_clic3,n
+    if n==1:
+
+        notif2("Objectif->Parler au suspects")
+        n+=1
+n=1
 
 def clic_coffre(event) :
     global can1,bool_piece4,trouver,coffre_ouvert
