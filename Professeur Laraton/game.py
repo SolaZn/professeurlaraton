@@ -1,5 +1,5 @@
 from tkinter import *
-import pygame
+"""import pygame """
 
 #interface globale du jeu
 def interface():
@@ -23,7 +23,7 @@ def interface():
     image_fond=can1.create_image(0,0, anchor="nw")
     zoom_fond=can1.create_image(0,0, anchor="nw")
     can1.itemconfig(image_fond, image=fond)
-    texte_global2=can2.create_text(220,250,text="",fill="black")
+    texte_global2=can2.create_text(220,200,text="",fill="black")
 
     #boutons
     start=Button(InterfaceJeu, text="START", command=piece1)
@@ -53,6 +53,16 @@ def interface():
     bool_intervention=False
     coffre_actif=False
     coffre_ouvert=False
+    bool_5=False
+    bool_2=False
+    bool_8=False
+    compt=0
+    compt1=0
+    compt2=0
+    k=0
+
+
+
     '''
     pygame.mixer.music.load("nyan.mp3") # import du fichier
     pygame.mixer.music.play() # on joue le fichier
@@ -116,18 +126,17 @@ def clic(event): #recupère les positions obtenues par objectChecker()
     #SPÉCIFIQUES#
 
 def presentation_clic(event): #Interactions clic liées à l'arrivée du joueur dans le manoir
-    global bool_clic2, bool_clic4, notif ,bool_intervention,bouton,n,boutonNotif
+    global bool_clic2, bool_clic4, notif ,bool_intervention,bouton,n,boutonNotif,trouver,bool_8,bool_2,compt,compt1,k
     if 293<event.x<335 and 316<event.y<436 :
         notif("Salut ! Je m'appelle Xavier , vers 19h j'etais à mon club de lecture\n On vient tout juste de commencer le dernier tome de Game Of Throne ! ","white")
-        boutonNotif()
+        bouton()
 
     if 399<event.x<446 and 304<event.y<442 :
         notif("Je suis Mark Armeau ,\nhier à 19h je suis aller boire un verre pour me changer les idées.","white")
-        boutonNotif()
+        bouton()
 
     if 535<event.x<572 and 316<event.y<436 and bool_clic2==False :
         notif("Enchantée , je suis Sophie . Hier , lors de cet effroyable incident ,\n j'etait invitée a un bal dansant mais j'ai perdu l'invitation...\n d'ailleurs euh... \n Non rien oubliez .","white")
-        boutonNotif()
         bool_intervention=True
         bouton()
         if n==2:
@@ -137,53 +146,79 @@ def presentation_clic(event): #Interactions clic liées à l'arrivée du joueur 
 
     if 734<event.x<784 and 322<event.y<433 and bool_clic4==False :
         notif("Bonjour ! Je m'appelle Martine , hier , j'ai passer la journée avec mes petits-fils ", "white")
-        boutonNotif()
+        bouton()
+
+    if 138<event.x<162 and 263<event.y<293  :
+        bool_8=True
+        trouver()
+        compt+=1
+        if compt==1:
+            k+=1
+    if 592<event.x<617 and 331<event.y<364  :
+        bool_2=True
+        trouver()
+        compt1+=1
+        if compt1==1:
+            k+=1
+
+
 
 def quitter1():
     global bquitter1,can2,fantome,notif,bool_clic2,bool_clic3,fantome1,quitter1,bool_fantome
-    global bool_clic4,perso6,can1,bool_clic5,bool_invitation,bool_lettre,bool_intervention
+    global bool_clic4,perso6,can1,bool_clic5,bool_invitation,bool_lettre,bool_intervention,bool_8,bool_2,n8,n2,n5
 
     bool_bquitter=True
     notif(" ","black")
+    bquitter1.place_forget()
 
     if bool_fantome==True:
         can2.delete("fantome")
-        supprimeNotif()
-        bquitter1.place_forget()
+
 
     if bool_invitation==True:
         can1.delete("invitation")
         can1.create_image(600,300,tags="robe",image=perso5)
         bool_invitation=False
-        bquitter1.place_forget()
+
 
     if bool_clic3==True:
         fantome1("\t\tAllons voir!")
-        bquitter1.place_forget()
+
         bool_clic3=False
 
     if bool_lettre==True:
         can1.delete("lettre")
         can1.create_image(320,270,tags="bleu",image=perso6)
-        bquitter1.place_forget()
+
         bool_lettre=False
 
     if bool_clic5==True:
-        fantome1("\t\t\t\t\t\tMartine toujours aussi maladroite cet énigme parle de trois endroits du manoire.\n\t\t\t\t\t\tMais d'abord allons voir ce coffre.")
-        bquitter1.place_forget()
+        fantome1("\tMartine toujours aussi maladroite cet énigme parle de trois endroits du manoire.\n\t Allons chercher ce qu'il y a dans ces endroit.")
+        bindice1=Button(InterfaceJeu, text="indice", command=indice)
+        bindice1.place(x=100,y=645)
         bool_clic5=False
 
     if bool_intervention==True:
-        fantome1("\t\t\t\t\t Sophie perd toujours tout. Elle les retrouve suvent dans le salon sur ta droite.\n\t\t\t\t\tSouvent dans des endroits improbable, il faut aller voir." )
-        bquitter1.place_forget()
+        fantome1(" \tSophie perd toujours tout. Elle les retrouve suvent dans le salon sur ta droite.\n\tSouvent dans des endroits improbable sous des meubles, il faut aller voir." )
+
         bool_intervention=False
+    if bool_8==True:
+        can1.delete("8")
+        bool_8=False
+    if bool_2==True:
+        can1.delete("2")
+        bool_2=False
+    if bool_5==True:
+        can1.delete("5")
+        bool_5=False
+
 
 def fantome1(texte):
     global can1,bool_piece3,can2,fantome,quitter1,notif,bquitter1,bool_fantome,bouton
     can2.create_image(100,100,tags="fantome",image=fantome)
     notif(texte,"blue")
     bool_fantome=True
-    bouton
+    bouton()
 
 def bouton():
     global bquitter1,quitter1
@@ -211,20 +246,29 @@ def clic_coffre(event) :
         print("stop")
 
 def clic2(event) :
-    global can1,invitation,fantome1,perso5,bool_clic2,bool_bquitter,notif,bool_clic3,bool_invitation,notif2,n,bouton
+    global can1,invitation,fantome1,perso5,bool_clic2,bool_bquitter,notif,bool_clic3,bool_invitation,notif2,n,bouton,bool_5,compt2,k
 
-    if  199<event.x<226 and 285<event.y<295:
+    if  199<event.x<226 and 285<event.y<295 and n==3:
         trouver()
         bool_clic2=True
         bool_invitation=True
+    elif  199<event.x<226 and 285<event.y<295 and n>3:
+        notif("l'invitation est déjà trouvé","green")
 
-    elif 580<event.x<642 and 205<event.y<378 and bool_clic2==True:
+    elif 580<event.x<642 and 205<event.y<378 and bool_clic2==True :
         notif("\t\t Merci de l'avoir retrouvé maintenant je peux vous faire confiance\n\t\t j'ai vu Martine cacher quelquechose dans un tiroir dans le couloir.","white")
         bool_clic3=True
         bouton()
         if n==3:
             notif2("Objectif->Trouver ce que Martine à cachée dans le tiroire   ")
             n+=1
+    if  73<event.x<131 and 218<event.y<309:
+        bool_5=True
+        trouver()
+        compt2+=1
+        if compt2==1:
+            k+=1
+
 
 def clic4(event):
     global bool_clic4,trouver,notif,bool_clic5,bool_lettre,n,notif2,bouton
@@ -237,17 +281,17 @@ def clic4(event):
         bool_clic5=True
         bouton()
         if n==4:
-            notif2("\tObjectif->Trouver les endroits du manoir dont parle la charade pour ouvrir le coffre")
+            notif2("\tObjectif->Trouver les endroits du manoir dont parle la charade puis ouvrir le coffre")
 
 def trouver():
-        global bvoir1,notif
+        global bvoir1,notif,bool_invitation,n
         notif("Tu as trouvé quelque chose, veux-tu le voir?","white")
         bvoir1=Button(InterfaceJeu, text="voir", command=voir1)
         bvoir1.place(x=745,y=645)
 
 def voir1():
-    global bvoir1,bool_clic2,can1,fantome1,invitation,bool_clic4,lettre,bool_invitation,bool_lettre, coffre_ouvert, coffre_actif
-    global zoom_fond, bool_piece4
+    global bvoir1,bool_clic2,can1,fantome1,invitation,bool_clic4,lettre,bool_invitation,bool_lettre, coffre_ouvert, coffre_actif,bouton
+    global zoom_fond, bool_piece4,n,n2,n8,n5,bool_5,bool_2,bool_8
     bvoir1.place_forget()
     notif(" ","black")
     if coffre_ouvert == False and bool_piece4 == "True":
@@ -260,12 +304,26 @@ def voir1():
         elif coffre_actif == True:
             coffre("refresh")
 
-    if bool_invitation==True:
+    if bool_invitation==True and n==3:
         can1.create_image(300,400,tags="invitation",image=invitation)
         fantome1 ("\t\tbravo tu as trouvé l'invitation allons parler à sophie \n\t\t pour plus d'informations. ")
+
     if bool_lettre==True:
         can1.create_image(300,400,tags="lettre",image=lettre)
         fantome1("\t\t Elle aurais reçu une lettre de menace. Mais pourquoi?\n\t\t Allons parler à Martine pour plus d'informations. ")
+    if bool_2==True:
+        can1.create_image(300,400,tags="2",image=n2)
+        bouton()
+    if bool_8==True:
+        can1.create_image(300,400,tags="8",image=n8)
+        bouton()
+    if bool_5==True:
+        can1.create_image(300,400,tags="5",image=n5)
+        bouton()
+
+
+
+
 
 #PIECE ------------------------------------------------------------------------------------------------------------------------- #PIECE
 #hall du manoir
@@ -275,9 +333,9 @@ def piece1():
        #fonctions à faire : faire fonction pour trouver objet (focus et bind...)'''
     global can1, can2, notif, image_fond
     global bhaut_piece1, bdroit_piece1, bgauche_piece1
-    global bool_piece1,perso1,perso2,perso3,perso4, bool_clic2,bool_clic4,presentation_clic,bouton
+    global bool_piece1,perso1,perso2,perso3,perso4, bool_clic2,bool_clic4,presentation_clic,objectif
 
-    bouton()
+    objectif()
 
     bool_piece1="True"
     #boutons de l'interface dans la piece
@@ -601,8 +659,10 @@ lettre=PhotoImage(file="images/feuille lettre.png")
 coffre_ferme=PhotoImage(file="images/background-4,2.png")
 coffre_ouvert_img=PhotoImage(file="images/background-4,1.png")
 transparent=PhotoImage(file="images/transparent.png")
-
+n2=PhotoImage(file="images/2.png")
+n8=PhotoImage(file="images/8.png")
+n5=PhotoImage(file="images/5.png")
 #lancement
-pygame.mixer.init()
+"""pygame.mixer.init()"""
 interface()
 InterfaceJeu.mainloop()
