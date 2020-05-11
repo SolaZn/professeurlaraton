@@ -116,7 +116,7 @@ def clic(event): #recupère les positions obtenues par objectChecker()
     #SPÉCIFIQUES#
 
 def presentation_clic(event): #Interactions clic liées à l'arrivée du joueur dans le manoir
-    global bool_clic2, bool_clic4, notif ,bool_intervention
+    global bool_clic2, bool_clic4, notif ,bool_intervention,bouton,n,boutonNotif
     if 293<event.x<335 and 316<event.y<436 :
         notif("Salut ! Je m'appelle Xavier , vers 19h j'etais à mon club de lecture\n On vient tout juste de commencer le dernier tome de Game Of Throne ! ","white")
         boutonNotif()
@@ -126,7 +126,7 @@ def presentation_clic(event): #Interactions clic liées à l'arrivée du joueur 
         boutonNotif()
 
     if 535<event.x<572 and 316<event.y<436 and bool_clic2==False :
-        notif("Enchantée , je suis Sophie . Hier , lors de cet effroyable incident ,\n j'etait invitée a un bal dansant...\n d'ailleurs euh... \n Non rien oubliez .","white")
+        notif("Enchantée , je suis Sophie . Hier , lors de cet effroyable incident ,\n j'etait invitée a un bal dansant mais j'ai perdu l'invitation...\n d'ailleurs euh... \n Non rien oubliez .","white")
         boutonNotif()
         bool_intervention=True
         bouton()
@@ -179,12 +179,11 @@ def quitter1():
         bool_intervention=False
 
 def fantome1(texte):
-    global can1,bool_piece3,can2,fantome,quitter1,notif,bquitter1,bool_fantome
+    global can1,bool_piece3,can2,fantome,quitter1,notif,bquitter1,bool_fantome,bouton
     can2.create_image(100,100,tags="fantome",image=fantome)
     notif(texte,"blue")
-    bquitter1=Button(InterfaceJeu, text="suivant", command=quitter1)
-    bquitter1.place(x=745,y=645)
     bool_fantome=True
+    bouton
 
 def bouton():
     global bquitter1,quitter1
@@ -212,7 +211,7 @@ def clic_coffre(event) :
         print("stop")
 
 def clic2(event) :
-    global can1,invitation,fantome1,perso5,bool_clic2,bool_bquitter,notif,bool_clic3,bool_invitation
+    global can1,invitation,fantome1,perso5,bool_clic2,bool_bquitter,notif,bool_clic3,bool_invitation,notif2,n,bouton
 
     if  199<event.x<226 and 285<event.y<295:
         trouver()
@@ -222,9 +221,13 @@ def clic2(event) :
     elif 580<event.x<642 and 205<event.y<378 and bool_clic2==True:
         notif("\t\t Merci de l'avoir retrouvé maintenant je peux vous faire confiance\n\t\t j'ai vu Martine cacher quelquechose dans un tiroir dans le couloir.","white")
         bool_clic3=True
+        bouton()
+        if n==3:
+            notif2("Objectif->Trouver ce que Martine à cachée dans le tiroire   ")
+            n+=1
 
 def clic4(event):
-    global bool_clic4,trouver,notif,bool_clic5,bool_lettre
+    global bool_clic4,trouver,notif,bool_clic5,bool_lettre,n,notif2,bouton
     if 255<event.x<275 and 326<event.y<371:
         bool_clic4=True
         bool_lettre=True
@@ -232,6 +235,9 @@ def clic4(event):
     if 296<event.x<347 and 175<event.y<339 and bool_clic4==True:
         notif("j'avais peur de vous le dire mais j'ai trouvé un coffre fermé dans le piano\n il y avait ecris dessus:\n-mon premier est un recipient où l'on met des fleurs\n -mon second est une fille rousse emprisonnée par un carré marron\n -mon troisième permet d'éclairer et réchauffer la piéce\nJe vous le dis car j'ai fais tomber la feuille dans la cheminée. ","white")
         bool_clic5=True
+        bouton()
+        if n==4:
+            notif2("\tObjectif->Trouver les endroits du manoir dont parle la charade pour ouvrir le coffre")
 
 def trouver():
         global bvoir1,notif
@@ -269,7 +275,9 @@ def piece1():
        #fonctions à faire : faire fonction pour trouver objet (focus et bind...)'''
     global can1, can2, notif, image_fond
     global bhaut_piece1, bdroit_piece1, bgauche_piece1
-    global bool_piece1,perso1,perso2,perso3,perso4, bool_clic2,bool_clic4,presentation_clic
+    global bool_piece1,perso1,perso2,perso3,perso4, bool_clic2,bool_clic4,presentation_clic,bouton
+
+    bouton()
 
     bool_piece1="True"
     #boutons de l'interface dans la piece
