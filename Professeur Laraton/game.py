@@ -36,34 +36,36 @@ def interface():
     reglesb.place(x=606,y=575)
 
     #booleens
-    notif_in_use=False
-    bv=False
-    bool_piece1="False"
-    bool_piece2="False"
-    bool_piece3="False"
-    bool_piece4="False"
-    bool_bquitter=False
-    bool_clic2=False
-    bool_clic3=False
-    bool_fantome=False
-    bool_clic4=False
-    bool_clic5=False
-    bool_invitation=False
-    bool_lettre=False
-    bool_intervention=False
-    coffre_actif=False
-    coffre_ouvert=False
-    bool_5=False
-    bool_2=False
-    bool_8=False
-    compt=0
-    compt1=0
-    compt2=0
-    k=0
+notif_in_use=False
+bv=False
+bool_piece1="False"
+bool_piece2="False"
+bool_piece3="False"
+bool_piece4="False"
+bool_bquitter=False
+bool_clic2=False
+bool_clic3=False
+bool_fantome=False
+bool_clic4=False
+bool_clic5=False
+bool_invitation=False
+bool_lettre=False
+bool_intervention=False
+coffre_actif=False
+coffre_ouvert=False
+bool_5=False
+bool_2=False
+bool_8=False
+compt=0
+compt1=0
+compt2=0
+k=0
+bool_indice=False
+tentative=0
 
 
 
-    '''
+'''
     pygame.mixer.music.load("nyan.mp3") # import du fichier
     pygame.mixer.music.play() # on joue le fichier
     pygame.mixer.music.set_volume(0.6) # réglage du volume (facultatif)'''
@@ -126,7 +128,8 @@ def clic(event): #recupère les positions obtenues par objectChecker()
     #SPÉCIFIQUES#
 
 def presentation_clic(event): #Interactions clic liées à l'arrivée du joueur dans le manoir
-    global bool_clic2, bool_clic4, notif ,bool_intervention,bouton,n,boutonNotif,trouver,bool_8,bool_2,compt,compt1,k
+    global bool_clic2, bool_clic4, notif ,bool_intervention,bouton,n,boutonNotif,trouver,bool_8,bindice1,bool_indice
+    global bool_2,compt,compt1,k
     if 293<event.x<335 and 316<event.y<436 :
         notif("Salut ! Je m'appelle Xavier , vers 19h j'etais à mon club de lecture\n On vient tout juste de commencer le dernier tome de Game Of Throne ! ","white")
         bouton()
@@ -152,20 +155,25 @@ def presentation_clic(event): #Interactions clic liées à l'arrivée du joueur 
         bool_8=True
         trouver()
         compt+=1
+        if bool_indice==True:
+            bindice1.place_forget()
         if compt==1:
             k+=1
+
     if 592<event.x<617 and 331<event.y<364  :
         bool_2=True
         trouver()
         compt1+=1
+        if bool_indice==True:
+            bindice1.place_forget()
         if compt1==1:
             k+=1
 
 
 
 def quitter1():
-    global bquitter1,can2,fantome,notif,bool_clic2,bool_clic3,fantome1,quitter1,bool_fantome
-    global bool_clic4,perso6,can1,bool_clic5,bool_invitation,bool_lettre,bool_intervention,bool_8,bool_2,n8,n2,n5
+    global bquitter1,can2,fantome,notif,bool_clic2,bool_clic3,fantome1,quitter1,bool_fantome,k
+    global bool_clic4,perso6,can1,bool_clic5,bool_invitation,bool_lettre,bool_intervention,bool_8,bool_2,bool_5,n2,n5,n8,indice,bindice1,bool_indice,fincharade,tentative
 
     bool_bquitter=True
     notif(" ","black")
@@ -192,10 +200,22 @@ def quitter1():
 
         bool_lettre=False
 
-    if bool_clic5==True:
-        fantome1("\tMartine toujours aussi maladroite cet énigme parle de trois endroits du manoire.\n\t Allons chercher ce qu'il y a dans ces endroit.")
+
+    if bool_indice==True and k<3:
         bindice1=Button(InterfaceJeu, text="indice", command=indice)
         bindice1.place(x=100,y=645)
+    elif bool_indice==True and k==3 and tentative==0:
+
+        fincharade()
+
+
+        bindice1.place_forget()
+        bool_indice=False
+        tentative=1
+
+    if bool_clic5==True:
+        fantome1("\tMartine toujours aussi maladroite cet énigme parle de trois endroits du manoire.\n\t Allons chercher ce qu'il y a dans ces endroit.")
+        bool_indice=True
         bool_clic5=False
 
     if bool_intervention==True:
@@ -203,14 +223,22 @@ def quitter1():
 
         bool_intervention=False
     if bool_8==True:
-        can1.delete("8")
+        can1.delete("n8")
         bool_8=False
     if bool_2==True:
-        can1.delete("2")
+        can1.delete("n2")
         bool_2=False
     if bool_5==True:
-        can1.delete("5")
+        can1.delete("n5")
         bool_5=False
+    if k==3 and tentative==0:
+
+        fincharade()
+        if bool_indice==True:
+
+            bindice1.place_forget()
+            bool_indice=False
+        tentative=1
 
 
 def fantome1(texte):
@@ -246,7 +274,7 @@ def clic_coffre(event) :
         print("stop")
 
 def clic2(event) :
-    global can1,invitation,fantome1,perso5,bool_clic2,bool_bquitter,notif,bool_clic3,bool_invitation,notif2,n,bouton,bool_5,compt2,k
+    global can1,invitation,fantome1,perso5,bool_clic2,bool_bquitter,notif,bool_clic3,bool_invitation,notif2,n,bouton,bool_5,compt2,k,bindice1,bool_indice
 
     if  199<event.x<226 and 285<event.y<295 and n==3:
         trouver()
@@ -266,6 +294,8 @@ def clic2(event) :
         bool_5=True
         trouver()
         compt2+=1
+        if bool_indice==True:
+            bindice1.place_forget()
         if compt2==1:
             k+=1
 
@@ -279,6 +309,7 @@ def clic4(event):
     if 296<event.x<347 and 175<event.y<339 and bool_clic4==True:
         notif("j'avais peur de vous le dire mais j'ai trouvé un coffre fermé dans le piano\n il y avait ecris dessus:\n-mon premier est un recipient où l'on met des fleurs\n -mon second est une fille rousse emprisonnée par un carré marron\n -mon troisième permet d'éclairer et réchauffer la piéce\nJe vous le dis car j'ai fais tomber la feuille dans la cheminée. ","white")
         bool_clic5=True
+
         bouton()
         if n==4:
             notif2("\tObjectif->Trouver les endroits du manoir dont parle la charade puis ouvrir le coffre")
@@ -312,14 +343,58 @@ def voir1():
         can1.create_image(300,400,tags="lettre",image=lettre)
         fantome1("\t\t Elle aurais reçu une lettre de menace. Mais pourquoi?\n\t\t Allons parler à Martine pour plus d'informations. ")
     if bool_2==True:
-        can1.create_image(300,400,tags="2",image=n2)
+        can1.create_image(300,400,tags="n2",image=n2)
         bouton()
     if bool_8==True:
-        can1.create_image(300,400,tags="8",image=n8)
+        can1.create_image(300,400,tags="n8",image=n8)
         bouton()
     if bool_5==True:
-        can1.create_image(300,400,tags="5",image=n5)
+        can1.create_image(300,400,tags="n5",image=n5)
         bouton()
+def indice():
+    global can2,bindince1,premier,deuxieme,troisieme,bdeuxieme,btroisieme,bpremier,bool_indice,notif,bouton
+
+    bindice1.place_forget()
+
+    can2.create_text(350,40,text="il vous un indice sur quelle partie de la charade?",font=("TkDefaultFont",18),fill="white",tags='indice')
+    bpremier=Button(InterfaceJeu, text="mon premier", command=premier)
+    bpremier.place(x=20,y=550)
+    bdeuxieme=Button(InterfaceJeu, text="mon deuxieme", command=deuxieme)
+    bdeuxieme.place(x=300,y=550)
+    btroisieme=Button(InterfaceJeu, text="mon troisieme", command=troisieme)
+    btroisieme.place(x=600,y=550)
+
+def resetindice() :
+    global can2,premier,deuxieme,troisieme,bpremier,btroisieme,bdeuxieme
+    can2.delete("indice")
+    bpremier.place_forget()
+    bdeuxieme.place_forget()
+    btroisieme.place_forget()
+def premier ():
+    global notif,bouton,resetindice
+    resetindice()
+    notif("l'objet ce trouve proche des escaliers de droite dans le hall ","white")
+    bouton()
+def deuxieme ():
+    global notif,bouton,resetindice
+    resetindice()
+    notif("l'objet est un tableau ","white")
+    bouton()
+def troisieme ():
+    global notif,bouton,resetindice
+    resetindice()
+    notif("l'objet ce trouve proche de l'endroit où vous avez trouvé l'invitation de Sophie ","white")
+    bouton()
+
+def fincharade():
+    global bool_indice,fantome1,bindice1
+
+    fantome1("\t Bravo tu as trouvé les 3 endroits\n\t Maintenant il faut mettre dans l'ordre de la Charade les chiffres que tu as trouvé \n\t Afin de former le mot de passe !  ")
+    if bool_indice==True:
+
+        bindice1.place_forget()
+        bool_indice=False
+
 
 
 
@@ -343,6 +418,7 @@ def piece1():
     reset_piece2()
     reset_piece3()
     reset_piece4()
+
 
     bhaut_piece1=Button(InterfaceJeu, text="↑", command=piece2)
     bhaut_piece1.place(x=755,y=515)
@@ -400,13 +476,17 @@ def reset_piece1(): #fonction utilisée pour changer de scène, on enlève tout
 #couloir haut du manoir
 def piece2():
     global can1, can2, notif, image_fond, bbas_piece2
-    global bool_piece2,bool_clic4
+    global bool_piece2,bool_clic4,perso6,bool_clic4
     bool_piece2="True"
 
     #boutons de l'interface dans la piece
     reset_piece1()
     bbas_piece2=Button(InterfaceJeu, text="↓", command=piece1)
     bbas_piece2.place(x=755,y=575)
+
+    if bool_clic4==True:
+
+        can1.create_image(320,270,tags="bleu",image=perso6)
 
     can1.focus_set() #test clic zones
     can1.bind("<ButtonPress-1>",clic4)
@@ -417,13 +497,16 @@ def piece2():
     pygame.mixer.music.stop()
 
 def reset_piece2():
-    global can1, can2, image_fond, bbas_piece2, supprimeNotif
+    global can1, can2, image_fond, bbas_piece2, supprimeNotif,perso6,bool_clic4
     global bool_piece2
     if bool_piece2=="True" or bool_piece2 == "Inactive":
         bbas_piece2.place_forget()
+
+
         supprimeNotif()
         bool_piece2 = "Inactive"
-
+    if bool_clic4==True:
+        can1.delete("bleu")
 #PIECE ------------------------------------------------------------------------------------------------------------------------- #PIECE
 #salon sous la nuit du manoir
 def piece3():
@@ -432,6 +515,7 @@ def piece3():
     bool_piece3="True"
     #boutons de l'interface dans la piece
     reset_piece1()
+
 
     bgauche_piece3=Button(InterfaceJeu, text="←", command=piece1)
     bgauche_piece3.place(x=735,y=575)
