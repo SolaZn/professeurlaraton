@@ -8,6 +8,7 @@ def interface():
     global bool_piece1,bool_piece2,bool_piece3,bool_piece4
     global bool_bquitter, bool_clic2, bool_clic3, bool_clic4, bool_clic5, bool_fantome
     global bool_intervention, bool_invitation, bool_lettre, bv, coffre_actif, coffre_ouvert
+    global bool_2,bool_5,bool_8,compt,compt1,compt2,bool_indice,tentative,k,n,Gagné,Perdu
     #booléens de l'interface
     global texte_global, notif_in_use, fondmenu, quitter, reglesb,texte_global2
 
@@ -36,32 +37,35 @@ def interface():
     reglesb.place(x=606,y=575)
 
     #booleens
-notif_in_use=False
-bv=False
-bool_piece1="False"
-bool_piece2="False"
-bool_piece3="False"
-bool_piece4="False"
-bool_bquitter=False
-bool_clic2=False
-bool_clic3=False
-bool_fantome=False
-bool_clic4=False
-bool_clic5=False
-bool_invitation=False
-bool_lettre=False
-bool_intervention=False
-coffre_actif=False
-coffre_ouvert=False
-bool_5=False
-bool_2=False
-bool_8=False
-compt=0
-compt1=0
-compt2=0
-k=0
-bool_indice=False
-tentative=0
+    notif_in_use=False
+    bv=False
+    bool_piece1="False"
+    bool_piece2="False"
+    bool_piece3="False"
+    bool_piece4="False"
+    bool_bquitter=False
+    bool_clic2=False
+    bool_clic3=False
+    bool_fantome=False
+    bool_clic4=False
+    bool_clic5=False
+    bool_invitation=False
+    bool_lettre=False
+    bool_intervention=False
+    coffre_actif=False
+    coffre_ouvert=False
+    bool_5=False
+    bool_2=False
+    bool_8=False
+    compt=0
+    compt1=0
+    compt2=0
+    k=0
+    bool_indice=False
+    tentative=0
+    Gagné=False
+    Perdu=False
+    n=1
 
 
 
@@ -128,15 +132,29 @@ def clic(event): #recupère les positions obtenues par objectChecker()
     #SPÉCIFIQUES#
 
 def presentation_clic(event): #Interactions clic liées à l'arrivée du joueur dans le manoir
-    global bool_clic2, bool_clic4, notif ,bool_intervention,bouton,n,boutonNotif,trouver,bool_8,bindice1,bool_indice
+    global bool_clic2, bool_clic4, notif ,bool_intervention,bouton,n,boutonNotif,trouver,bool_8,bindice1,bool_indice,coffre_ouvert,bembarquer,embarquement,Gagné,Perdu
     global bool_2,compt,compt1,k
-    if 293<event.x<335 and 316<event.y<436 :
+    if 293<event.x<335 and 316<event.y<436 and coffre_ouvert==False :
         notif("Salut ! Je m'appelle Xavier , vers 19h j'etais à mon club de lecture\n On vient tout juste de commencer le dernier tome de Game Of Throne ! ","white")
         bouton()
+    elif 293<event.x<335 and 316<event.y<436 and coffre_ouvert==True :
+        notif("On l'embarque?","white")
+        bembarquer=Button(InterfaceJeu, text="embarquer", command=embarquement)
+        bembarquer.place(x=300,y=550)
+        Gagné=True
+        Perdu=False
 
-    if 399<event.x<446 and 304<event.y<442 :
+
+
+    if 399<event.x<446 and 304<event.y<442 and coffre_ouvert==False :
         notif("Je suis Mark Armeau ,\nhier à 19h je suis aller boire un verre pour me changer les idées.","white")
         bouton()
+    elif 399<event.x<446 and 304<event.y<442 and coffre_ouvert==True :
+        notif("On l'embarque?","white")
+        bembarquer=Button(InterfaceJeu, text="embarquer", command=embarquement)
+        bembarquer.place(x=300,y=550)
+        Perdu=True
+        Gagné=False
 
     if 535<event.x<572 and 316<event.y<436 and bool_clic2==False :
         notif("Enchantée , je suis Sophie . Hier , lors de cet effroyable incident ,\n j'etait invitée a un bal dansant mais j'ai perdu l'invitation...\n d'ailleurs euh... \n Non rien oubliez .","white")
@@ -261,7 +279,7 @@ def objectif() :
 
         notif2("Objectif->Parler au suspects")
         n+=1
-n=1
+
 
 def clic_coffre(event) :
     global can1,bool_piece4,trouver,coffre_ouvert
@@ -313,6 +331,7 @@ def clic4(event):
         bouton()
         if n==4:
             notif2("\tObjectif->Trouver les endroits du manoir dont parle la charade puis ouvrir le coffre")
+            n+=1
 
 def trouver():
         global bvoir1,notif,bool_invitation,n
@@ -394,6 +413,32 @@ def fincharade():
 
         bindice1.place_forget()
         bool_indice=False
+def embarquement():
+    global Gagné,Perdu,notif,Gagné,image_fond,can1,gagné,bembarquement,reset_piece1,Perdu,perdu,retour,bretourmenu
+    notif("   ","white")
+    bembarquer.place_forget()
+    reset_piece1()
+    bretourmenu=Button(InterfaceJeu, text="retour menu", command=retour)
+    bretourmenu.place(x=745,y=645)
+    if Gagné==True:
+        can1.itemconfig(image_fond,image=gagné)
+        notif("En effet, il n'etait pas a son club de lecture car il deteste Game Of Throne\n Il a tué Jack car il voulait récupérer son Manoir et l'avoir pour lui tout seul.","white")
+    if Perdu==True:
+         can1.itemconfig(image_fond,image=perdu)
+         notif("il était bien au bar ce soir la d'ailleur l'odeur le prouvait ","white")
+def retour():
+   global interface,bretourmenu,notif
+   notif(" ","white")
+   bretourmenu.place_forget()
+   interface()
+
+
+
+
+
+
+
+
 
 
 
@@ -683,7 +728,7 @@ def inc_coffre(nb_coffre, incdec): #1er arg position liste code; 2eme arg increm
     print("ehoh")
 
 def checkCoffre(): #fonction appelée pour vérifier le bon résultat du code tapé, n'a besoin que des données du code
-    global code_coffre, coffre_ouvert, zoom_fond, can1
+    global code_coffre, coffre_ouvert, zoom_fond, can1 ,n,notif2
 
     passedcode = 0 #j'ai choisi l'incrémentation pour pouvoir valider en couleur dans le désordre
     if code_coffre[0] == 2:
@@ -703,6 +748,9 @@ def checkCoffre(): #fonction appelée pour vérifier le bon résultat du code ta
 
         can1.itemconfig(zoom_fond,image=coffre_ouvert_img)
         coffre("delete")
+        if n==5:
+            notif2("Objectif->Embarquer le tueur")
+
     else:
         notif("Cela n'a pas l'air de marcher","red")
 
@@ -746,6 +794,8 @@ transparent=PhotoImage(file="images/transparent.png")
 n2=PhotoImage(file="images/2.png")
 n8=PhotoImage(file="images/8.png")
 n5=PhotoImage(file="images/5.png")
+gagné=PhotoImage(file="images/fond fin gagne.png")
+perdu=PhotoImage(file="images/fond fin perdu.png")
 #lancement
 """pygame.mixer.init()"""
 interface()
