@@ -24,7 +24,7 @@ def interface():
     image_fond=can1.create_image(0,0, anchor="nw")
     zoom_fond=can1.create_image(0,0, anchor="nw")
     can1.itemconfig(image_fond, image=fond)
-    texte_global2=can2.create_text(220,210,text="",fill="black")
+    texte_global2=can2.create_text(370,210,text="",fill="black")
 
     #boutons
     start=Button(InterfaceJeu, text="START", command=piece1)
@@ -232,7 +232,7 @@ def quitter1():
         tentative=1
 
     if bool_clic5==True:
-        fantome1("\tMartine toujours aussi maladroite cet énigme parle de trois endroits du manoire et d'une soustraction .\n\t Allons chercher ce qu'il y a dans ces endroits.")
+        fantome1("\tMartine toujours aussi maladroite cet énigme parle de trois endroits du manoire et d'une soustraction .\n\t Allons chercher ce qu'il y a dans ces endroits je te conseille de prendre une feuille\n\t Si tu ne trouve pas les endroit utilise le bouton indice, il va apparaitre comme par magie .")
         bool_indice=True
         bool_clic5=False
 
@@ -325,7 +325,7 @@ def clic4(event):
         bool_lettre=True
         trouver()
     if 296<event.x<347 and 175<event.y<339 and bool_clic4==True:
-        notif("j'avais peur de vous le dire mais j'ai trouvé un coffre fermé dans le piano\n il y avait ecris dessus:\n-mon premier est un recipient où l'on met des fleurs\n -mon second est une fille rousse emprisonnée par un carré marron\n -mon troisième permet d'éclairer et réchauffer la piéce\n -mon quatrieme est la soustraction de mon deuxieme par mon troisieme-> Mon tout forme le code \nJe vous le dis car j'ai fais tomber la feuille dans la cheminée. ","white")
+        notif("j'avais peur de vous le dire mais j'ai trouvé un coffre fermé dans le piano\n il y avait ecris dessus:\n-mon premier est un recipient où l'on met des fleurs\n -mon second est une fille rousse emprisonnée par un carré marron\n -mon troisième permet d'éclairer et réchauffer la piéce\n -mon quatrieme est la soustraction de mon deuxieme par mon troisieme\n-> Mon tout forme le code Je vous le dis car j'ai fais tomber la feuille dans la cheminée. ","white")
         bool_clic5=True
 
         bouton()
