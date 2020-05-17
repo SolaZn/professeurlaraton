@@ -375,7 +375,7 @@ def indice():
 
     bindice1.place_forget()
 
-    can2.create_text(350,40,text="il vous un indice sur quelle partie de la charade?",font=("TkDefaultFont",18),fill="white",tags='indice')
+    can2.create_text(350,40,text="il manque vous un indice sur quelle partie de la charade?",font=("TkDefaultFont",18),fill="white",tags='indice')
     bpremier=Button(InterfaceJeu, text="mon premier", command=premier)
     bpremier.place(x=20,y=550)
     bdeuxieme=Button(InterfaceJeu, text="mon deuxieme", command=deuxieme)
@@ -431,19 +431,6 @@ def retour():
    notif(" ","white")
    bretourmenu.place_forget()
    interface()
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #PIECE ------------------------------------------------------------------------------------------------------------------------- #PIECE
 #hall du manoir
@@ -799,4 +786,6 @@ perdu=PhotoImage(file="images/fond fin perdu.png")
 #lancement
 """pygame.mixer.init()"""
 interface()
+'''InterfaceJeu.wm_state(newstate="zoomed")''' #mets le jeu en plein écran
+InterfaceJeu.title('233rd Roland Street; Affair for the Night Team') #change le titre du jeu
 InterfaceJeu.mainloop()
