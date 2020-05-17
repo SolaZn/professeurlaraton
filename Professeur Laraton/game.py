@@ -8,7 +8,7 @@ def interface():
     global bool_piece1,bool_piece2,bool_piece3,bool_piece4
     global bool_bquitter, bool_clic2, bool_clic3, bool_clic4, bool_clic5, bool_fantome
     global bool_intervention, bool_invitation, bool_lettre, bv, coffre_actif, coffre_ouvert
-    global bool_2,bool_5,bool_8,compt,compt1,compt2,bool_indice,tentative,k,n,Gagné,Perdu
+    global bool_2,bool_5,bool_8,compt,compt1,compt2,bool_indice,tentative,k,n,Gagné,Perdu,bool_quitter,bool_voir,bool_bindice
     #booléens de l'interface
     global texte_global, notif_in_use, fondmenu, quitter, reglesb,texte_global2
 
@@ -66,6 +66,9 @@ def interface():
     Gagné=False
     Perdu=False
     n=1
+    bool_quitter=False
+    bool_voir=False
+    bool_bindice=False
 
 
 
@@ -132,7 +135,7 @@ def clic(event): #recupère les positions obtenues par objectChecker()
     #SPÉCIFIQUES#
 
 def presentation_clic(event): #Interactions clic liées à l'arrivée du joueur dans le manoir
-    global bool_clic2, bool_clic4, notif ,bool_intervention,bouton,n,boutonNotif,trouver,bool_8,bindice1,bool_indice,coffre_ouvert,bembarquer,embarquement,Gagné,Perdu
+    global bool_clic2, bool_clic4, notif ,bool_intervention,bouton,n,boutonNotif,trouver,bool_8,bindice1,bool_indice,coffre_ouvert,bembarquer,embarquement,Gagné,Perdu,bool_bindice
     global bool_2,compt,compt1,k
     if 293<event.x<335 and 316<event.y<436 and coffre_ouvert==False :
         notif("Salut ! Je m'appelle Xavier , vers 19h j'etais à mon club de lecture\n On vient tout juste de commencer le dernier tome de Game Of Throne ! ","white")
@@ -175,6 +178,7 @@ def presentation_clic(event): #Interactions clic liées à l'arrivée du joueur 
         compt+=1
         if bool_indice==True:
             bindice1.place_forget()
+            bool_bindice=False
         if compt==1:
             k+=1
 
@@ -184,6 +188,7 @@ def presentation_clic(event): #Interactions clic liées à l'arrivée du joueur 
         compt1+=1
         if bool_indice==True:
             bindice1.place_forget()
+            bool_bindice=False
         if compt1==1:
             k+=1
 
@@ -191,11 +196,12 @@ def presentation_clic(event): #Interactions clic liées à l'arrivée du joueur 
 
 def quitter1():
     global bquitter1,can2,fantome,notif,bool_clic2,bool_clic3,fantome1,quitter1,bool_fantome,k
-    global bool_clic4,perso6,can1,bool_clic5,bool_invitation,bool_lettre,bool_intervention,bool_8,bool_2,bool_5,n2,n5,n8,indice,bindice1,bool_indice,fincharade,tentative
-
+    global bool_clic4,perso6,can1,bool_clic5,bool_invitation,bool_lettre,bool_intervention,bool_8,bool_2,bool_5,n2,n5,n8,indice,bindice1,bool_indice,fincharade,tentative,bool_quitter
+    global bool_bindice
     bool_bquitter=True
     notif(" ","black")
     bquitter1.place_forget()
+    bool_quitter=False
 
     if bool_fantome==True:
         can2.delete("fantome")
@@ -219,9 +225,10 @@ def quitter1():
         bool_lettre=False
 
 
-    if bool_indice==True and k<3:
+    if bool_indice==True and k<3 and bool_bindice==False:
         bindice1=Button(InterfaceJeu, text="indice", command=indice)
-        bindice1.place(x=100,y=670)
+        bindice1.place(x=20,y=670)
+        bool_bindice=True
     elif bool_indice==True and k==3 and tentative==0:
 
         fincharade()
@@ -232,7 +239,7 @@ def quitter1():
         tentative=1
 
     if bool_clic5==True:
-        fantome1("\tMartine toujours aussi maladroite cet énigme parle de trois endroits du manoire et d'une soustraction .\n\t Allons chercher ce qu'il y a dans ces endroits je te conseille de prendre une feuille\n\t Si tu ne trouve pas les endroit utilise le bouton indice, il va apparaitre comme par magie .")
+        fantome1("\tMartine toujours aussi maladroite cet énigme parle de trois endroits du manoire et d'une soustraction .\n\t Allons chercher ce qu'il y a dans ces endroits je te conseille de prendre une feuille\n\t Si tu ne trouve pas les endroits utilise le bouton indice, il va apparaitre comme par magie .")
         bool_indice=True
         bool_clic5=False
 
@@ -267,9 +274,14 @@ def fantome1(texte):
     bouton()
 
 def bouton():
-    global bquitter1,quitter1
-    bquitter1=Button(InterfaceJeu, text="suivant", command=quitter1)
-    bquitter1.place(x=745,y=645)
+    global bquitter1,quitter1,bool_quitter
+    if bool_quitter==False:
+
+        bquitter1=Button(InterfaceJeu, text="suivant", command=quitter1)
+        bquitter1.place(x=745,y=645)
+        bool_quitter=True
+
+
 def notif2(texte):
     global texte_global2,can2
     can2.itemconfig(texte_global2,text=texte,fill="red")
@@ -292,7 +304,7 @@ def clic_coffre(event) :
         print("stop")
 
 def clic2(event) :
-    global can1,invitation,fantome1,perso5,bool_clic2,bool_bquitter,notif,bool_clic3,bool_invitation,notif2,n,bouton,bool_5,compt2,k,bindice1,bool_indice
+    global can1,invitation,fantome1,perso5,bool_clic2,bool_bquitter,notif,bool_clic3,bool_invitation,notif2,n,bouton,bool_5,compt2,k,bindice1,bool_indice,bool_bindice
 
     if  199<event.x<226 and 285<event.y<295 and n==3:
         trouver()
@@ -314,6 +326,7 @@ def clic2(event) :
         compt2+=1
         if bool_indice==True:
             bindice1.place_forget()
+            bool_bindice=False
         if compt2==1:
             k+=1
 
@@ -334,16 +347,21 @@ def clic4(event):
             n+=1
 
 def trouver():
-        global bvoir1,notif,bool_invitation,n
+        global bvoir1,notif,bool_invitation,n,bool_voir
+
         notif("Tu as trouvé quelque chose, veux-tu le voir?","white")
-        bvoir1=Button(InterfaceJeu, text="voir", command=voir1)
-        bvoir1.place(x=745,y=645)
+        if bool_voir==False:
+            bvoir1=Button(InterfaceJeu, text="voir", command=voir1)
+            bvoir1.place(x=745,y=645)
+            bool_voir=True
 
 def voir1():
     global bvoir1,bool_clic2,can1,fantome1,invitation,bool_clic4,lettre,bool_invitation,bool_lettre, coffre_ouvert, coffre_actif,bouton
-    global zoom_fond, bool_piece4,n,n2,n8,n5,bool_5,bool_2,bool_8
+    global zoom_fond, bool_piece4,n,n2,n8,n5,bool_5,bool_2,bool_8,bool_voir
     bvoir1.place_forget()
     notif(" ","black")
+    bool_voir=False
+
     if coffre_ouvert == False and bool_piece4 == "True":
         notif("Vous avez trouvé un coffre","white")
         can1.itemconfig(zoom_fond,image=coffre_ferme)
@@ -371,11 +389,12 @@ def voir1():
         can1.create_image(300,400,tags="n5",image=n5)
         bouton()
 def indice():
-    global can2,bindince1,premier,deuxieme,troisieme,bdeuxieme,btroisieme,bpremier,bool_indice,notif,bouton
+    global can2,bindince1,premier,deuxieme,troisieme,bdeuxieme,btroisieme,bpremier,bool_indice,notif,bouton,bool_bindice
 
     bindice1.place_forget()
+    bool_bindice=False
 
-    can2.create_text(350,40,text="il manque vous un indice sur quelle partie de la charade?",font=("TkDefaultFont",18),fill="white",tags='indice')
+    can2.create_text(350,40,text="il vous manque  un indice sur quelle partie de la charade?",font=("TkDefaultFont",18),fill="white",tags='indice')
     bpremier=Button(InterfaceJeu, text="mon premier", command=premier)
     bpremier.place(x=20,y=550)
     bdeuxieme=Button(InterfaceJeu, text="mon deuxieme", command=deuxieme)
