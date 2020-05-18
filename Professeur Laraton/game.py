@@ -24,7 +24,7 @@ def interface():
     image_fond=can1.create_image(0,0, anchor="nw")
     zoom_fond=can1.create_image(0,0, anchor="nw")
     can1.itemconfig(image_fond, image=fond)
-    texte_global2=can2.create_text(370,210,text="",fill="black", anchor="nw")
+    texte_global2=can2.create_text(370,200,text="",fill="black", anchor="nw")
 
     #boutons
     start=Button(InterfaceJeu, text="START", command=piece1)
