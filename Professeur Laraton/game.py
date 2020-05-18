@@ -8,7 +8,7 @@ def interface():
     global bool_piece1,bool_piece2,bool_piece3,bool_piece4
     global bool_bquitter, bool_clic2, bool_clic3, bool_clic4, bool_clic5, bool_fantome
     global bool_intervention, bool_invitation, bool_lettre, bv, coffre_actif, coffre_ouvert
-    global bool_2,bool_5,bool_8,compt,compt1,compt2,bool_indice,tentative,k,n,Gagné,Perdu,bool_quitter,bool_voir,bool_bindice
+    global bool_2,bool_5,bool_8,compt,compt1,compt2,bool_indice,tentative,k,n,Gagné,Perdu,bool_quitter,bool_voir,bool_bindice,bool_debut,bool_fin
     #booléens de l'interface
     global texte_global, notif_in_use, fondmenu, quitter, reglesb,texte_global2
 
@@ -69,6 +69,8 @@ def interface():
     bool_quitter=False
     bool_voir=False
     bool_bindice=False
+    bool_debut=False
+    bool_fin=False
 
 
 
@@ -136,31 +138,37 @@ def clic(event): #recupère les positions obtenues par objectChecker()
 
 def presentation_clic(event): #Interactions clic liées à l'arrivée du joueur dans le manoir
     global bool_clic2, bool_clic4, notif ,bool_intervention,bouton,n,boutonNotif,trouver,bool_8,bindice1,bool_indice,coffre_ouvert,bembarquer,embarquement,Gagné,Perdu,bool_bindice
-    global bool_2,compt,compt1,k
+    global bool_2,compt,compt1,k,bool_fin
     if 293<event.x<335 and 316<event.y<436 and coffre_ouvert==False :
         notif("Salut ! Je m'appelle Xavier , vers 19h j'etais à mon club de lecture\n On vient tout juste de commencer le dernier tome de Game Of Throne ! ","white")
         bouton()
     elif 293<event.x<335 and 316<event.y<436 and coffre_ouvert==True :
-        notif("On l'embarque?","white")
-        bembarquer=Button(InterfaceJeu, text="embarquer", command=embarquement)
-        bembarquer.place(x=300,y=550)
+        notif("On l'embarque ?","white")
         Gagné=True
         Perdu=False
+        if bool_fin==False:
+            bembarquer=Button(InterfaceJeu, text="embarquer", command=embarquement)
+            bembarquer.place(x=300,y=550)
+            bool_fin=True
+
 
 
 
     if 399<event.x<446 and 304<event.y<442 and coffre_ouvert==False :
-        notif("Je suis Mark Armeau ,\nhier à 19h je suis aller boire un verre pour me changer les idées.","white")
+        notif("Je suis Mark Armeau ,\n hier à 19h ? Je suis aller boire un verre pour me changer les idées.","white")
         bouton()
     elif 399<event.x<446 and 304<event.y<442 and coffre_ouvert==True :
-        notif("On l'embarque?","white")
-        bembarquer=Button(InterfaceJeu, text="embarquer", command=embarquement)
-        bembarquer.place(x=300,y=550)
+        notif("On l'embarque ?","white")
         Perdu=True
         Gagné=False
+        if bool_fin==False:
+            bembarquer=Button(InterfaceJeu, text="embarquer", command=embarquement)
+            bembarquer.place(x=300,y=550)
+            bool_fin=True
+
 
     if 535<event.x<572 and 316<event.y<436 and bool_clic2==False :
-        notif("Enchantée , je suis Sophie . Hier , lors de cet effroyable incident ,\n j'etait invitée a un bal dansant mais j'ai perdu l'invitation...\n d'ailleurs euh... \n Non rien oubliez .","white")
+        notif("Enchantée , je suis Sophie . Hier , lors de cet effroyable incident ,\n j'etait invitée a un bal dansant mais j'ai perdu l'invitation...\n d'ailleurs... Non rien oubliez .","white")
         bool_intervention=True
         bouton()
         if n==2:
@@ -169,7 +177,7 @@ def presentation_clic(event): #Interactions clic liées à l'arrivée du joueur 
 
 
     if 734<event.x<784 and 322<event.y<433 and bool_clic4==False :
-        notif("Bonjour ! Je m'appelle Martine , hier , j'ai passer la journée avec mes petits-fils ", "white")
+        notif("Bonjour ! Je m'appelle Martine . \n Hier ? j'ai passer toute la journée avec mes petits-fils . ", "white")
         bouton()
 
     if 138<event.x<162 and 263<event.y<293  :
@@ -214,7 +222,7 @@ def quitter1():
 
 
     if bool_clic3==True:
-        fantome1("\t\tAllons voir!")
+        fantome1("\t\tAllons voir !")
 
         bool_clic3=False
 
@@ -239,12 +247,12 @@ def quitter1():
         tentative=1
 
     if bool_clic5==True:
-        fantome1("\tMartine toujours aussi maladroite cet énigme parle de trois endroits du manoire et d'une soustraction .\n\t Allons chercher ce qu'il y a dans ces endroits je te conseille de prendre une feuille\n\t Si tu ne trouve pas les endroits utilise le bouton indice, il va apparaitre comme par magie .")
+        fantome1("\t Martine toujours aussi maladroite cet énigme parle de trois endroits du manoir et d'une soustraction .\n\t Allons chercher ce qu'il y a dans ces endroits je te conseille de prendre une feuille\n\t Si tu ne trouve pas les endroits utilise le bouton indice, il va apparaitre comme par magie .")
         bool_indice=True
         bool_clic5=False
 
     if bool_intervention==True:
-        fantome1(" \tSophie perd toujours tout. Elle les retrouve suvent dans le salon sur ta droite.\n\tSouvent dans des endroits improbable sous des meubles, il faut aller voir." )
+        fantome1(" \t Sophie perd toujours tout. Elle retrouve parfois ses affaires dans le salon sur ta droite.\n\tSouvent dans des endroits improbables sous des meubles, il faut aller voir." )
 
         bool_intervention=False
     if bool_8==True:
@@ -289,7 +297,7 @@ def objectif() :
     global notif2,bool_intervention,bool_clic3,n
     if n==1:
 
-        notif2("Objectif->Parler au suspects")
+        notif2("Objectif -> Parler aux suspects")
         n+=1
 
 
@@ -314,11 +322,11 @@ def clic2(event) :
         notif("l'invitation est déjà trouvé","green")
 
     elif 580<event.x<642 and 205<event.y<378 and bool_clic2==True :
-        notif("\t\t Merci de l'avoir retrouvé maintenant je peux vous faire confiance\n\t\t j'ai vu Martine cacher quelquechose dans un tiroir dans le couloir.","white")
+        notif("\t\t Merci de l'avoir retrouvé maintenant je peux vous faire confiance\n\t\t j'ai vu Martine cacher quelque chose dans un tiroir dans le couloir au 1er étage .","white")
         bool_clic3=True
         bouton()
         if n==3:
-            notif2("Objectif->Trouver ce que Martine à cachée dans le tiroire   ")
+            notif2("Objectif -> Trouver ce que Martine à cachée dans le tiroir   ")
             n+=1
     if  73<event.x<131 and 218<event.y<309:
         bool_5=True
@@ -338,18 +346,18 @@ def clic4(event):
         bool_lettre=True
         trouver()
     if 296<event.x<347 and 175<event.y<339 and bool_clic4==True:
-        notif("j'avais peur de vous le dire mais j'ai trouvé un coffre fermé dans le piano\n il y avait ecris dessus:\n-mon premier est un recipient où l'on met des fleurs\n -mon second est une fille rousse emprisonnée par un carré marron\n -mon troisième permet d'éclairer et réchauffer la piéce\n -mon quatrieme est la soustraction de mon deuxieme par mon troisieme\n-> Mon tout forme le code Je vous le dis car j'ai fais tomber la feuille dans la cheminée. ","white")
+        notif("j'avais peur de vous le dire mais j'ai trouvé un coffre fermé dans le piano\n il y avait écrit dessus:\n-mon premier est un récipient où l'on met des fleurs\n -mon second est une fille rousse emprisonnée par un carré marron\n -mon troisième permet d'éclairer et réchauffer la pièce\n -mon quatrième est la soustraction de mon deuxieme par mon troisieme\n-> Mon tout forme le code Je vous le dis car j'ai fait tomber la feuille dans la cheminée. ","white")
         bool_clic5=True
 
         bouton()
         if n==4:
-            notif2("\tObjectif->Trouver les endroits du manoir dont parle la charade puis ouvrir le coffre")
+            notif2("\tObjectif -> Trouver les endroits du manoir dont parle la charade puis ouvrir le coffre")
             n+=1
 
 def trouver():
         global bvoir1,notif,bool_invitation,n,bool_voir
 
-        notif("Tu as trouvé quelque chose, veux-tu le voir?","white")
+        notif("Tu as trouvé quelque chose, veux-tu le voir ?","white")
         if bool_voir==False:
             bvoir1=Button(InterfaceJeu, text="voir", command=voir1)
             bvoir1.place(x=745,y=645)
@@ -374,11 +382,11 @@ def voir1():
 
     if bool_invitation==True and n==3:
         can1.create_image(300,400,tags="invitation",image=invitation)
-        fantome1 ("\t\tbravo tu as trouvé l'invitation allons parler à sophie \n\t\t pour plus d'informations. ")
+        fantome1 ("\t\t Bravo tu as trouvé l'invitation allons parler à Sophie \n\t\t pour plus d'informations. ")
 
     if bool_lettre==True:
         can1.create_image(300,400,tags="lettre",image=lettre)
-        fantome1("\t\t Elle aurais reçu une lettre de menace. Mais pourquoi?\n\t\t Allons parler à Martine pour plus d'informations. ")
+        fantome1("\t\t Elle aurais reçu une lettre de menace . Mais pourquoi ?\n\t\t Allons parler à Martine pour plus d'informations . ")
     if bool_2==True:
         can1.create_image(300,400,tags="n2",image=n2)
         bouton()
@@ -394,12 +402,12 @@ def indice():
     bindice1.place_forget()
     bool_bindice=False
 
-    can2.create_text(350,40,text="il vous manque  un indice sur quelle partie de la charade?",font=("TkDefaultFont",18),fill="white",tags='indice')
+    can2.create_text(350,40,text="il vous manque  un indice sur quelle partie de la charade ?",font=("TkDefaultFont",18),fill="white",tags='indice')
     bpremier=Button(InterfaceJeu, text="mon premier", command=premier)
     bpremier.place(x=20,y=550)
-    bdeuxieme=Button(InterfaceJeu, text="mon deuxieme", command=deuxieme)
+    bdeuxieme=Button(InterfaceJeu, text="mon second", command=deuxieme)
     bdeuxieme.place(x=300,y=550)
-    btroisieme=Button(InterfaceJeu, text="mon troisieme", command=troisieme)
+    btroisieme=Button(InterfaceJeu, text="mon troisième", command=troisieme)
     btroisieme.place(x=600,y=550)
 
 def resetindice() :
@@ -444,7 +452,7 @@ def embarquement():
         notif("En effet, il n'etait pas a son club de lecture car il deteste Game Of Throne\n Il a tué Jack car il voulait récupérer son Manoir et l'avoir pour lui tout seul.","white")
     if Perdu==True:
          can1.itemconfig(image_fond,image=perdu)
-         notif("il était bien au bar ce soir la d'ailleur l'odeur le prouvait ","white")
+         notif("il était bien au bar ce soir la d'ailleurs l'odeur le prouvait ","white")
 def retour():
    global interface,bretourmenu,notif
    notif(" ","white")
@@ -459,7 +467,11 @@ def piece1():
        #fonctions à faire : faire fonction pour trouver objet (focus et bind...)'''
     global can1, can2, notif, image_fond
     global bhaut_piece1, bdroit_piece1, bgauche_piece1
-    global bool_piece1,perso1,perso2,perso3,perso4, bool_clic2,bool_clic4,presentation_clic,objectif
+    global bool_piece1,perso1,perso2,perso3,perso4, bool_clic2,bool_clic4,presentation_clic,objectif,bool_debut,fantome1,bouton
+
+    if bool_debut==False:
+        fantome1("\t Hey ! Oups desolé de t'avoir fait peur . \n\t Oui oui, c'est moi Jack la victime \n\t je compte bien t'apporter toute l'aide nécessaire pour trouver le coupable !")
+        bool_debut=True
 
     objectif()
 
@@ -605,8 +617,7 @@ def piece4():
     bdroit_piece4=Button(InterfaceJeu, text="→", command=piece1)
     bdroit_piece4.place(x=775,y=575)
 
-    if bool_clic2==True:
-        can1.create_image(600,300,tags="robe",image=perso5)
+
 
     #fond de la piece
     can1.itemconfig(image_fond,image=fond_piece4)
@@ -755,10 +766,10 @@ def checkCoffre(): #fonction appelée pour vérifier le bon résultat du code ta
         can1.itemconfig(zoom_fond,image=coffre_ouvert_img)
         coffre("delete")
         if n==5:
-            notif2("Objectif->Embarquer le tueur")
+            notif2("Objectif -> Embarquer le coupable")
 
     else:
-        notif("Cela n'a pas l'air de marcher","red")
+        notif("Cela n'a pas l'air de fonctionner","red")
 
 def reset_piece4():
     global bdroit_piece4
