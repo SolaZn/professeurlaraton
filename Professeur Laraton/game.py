@@ -1,5 +1,5 @@
 from tkinter import *
-import pygame
+"""import pygame """
 
 #interface globale du jeu
 def interface():
@@ -9,7 +9,7 @@ def interface():
     global bool_bquitter, bool_clic2, bool_clic3, bool_clic4, bool_clic5, bool_fantome
     global bool_intervention, bool_invitation, bool_lettre, bv, coffre_actif, coffre_ouvert
     global bool_2,bool_5,bool_8,compt,compt1,compt2,bool_indice,tentative,k,n,Gagné,Perdu,bool_quitter,bool_voir,bool_bindice, bool_regles, bool_debut,bool_fin
-    global Perdu1, Perdu2
+    global Perdu1, Perdu2,bool_coffre
     #booléens de l'interface
     global texte_global, notif_in_use, fondmenu, quitter, texte_global2
 
@@ -74,10 +74,11 @@ def interface():
     bool_fin=False
     Perdu1=False
     Perdu2=False
+    bool_coffre=False
 
-    pygame.mixer.music.load("theme.mp3") # import du fichier
+    """pygame.mixer.music.load("theme.mp3") # import du fichier
     pygame.mixer.music.play() # on joue le fichier
-    pygame.mixer.music.set_volume(0.6) # réglage du volume (facultatif)
+    pygame.mixer.music.set_volume(0.6) # réglage du volume (facultatif)"""
 
 def regles(x="1"):
     global can1,fond2,image_fond, brief2, returnb, bool_regles, start
@@ -188,8 +189,8 @@ def presentation_clic(event): #Interactions clic liées à l'arrivée du joueur 
         if n==2:
             notif2("Objectif -> Retrouver l'invitation de Sophie pour l'innocenter")
             n+=1
-        elif 535<event.x<572 and 316<event.y<436 and bool_clic2==False and coffre_ouvert==True:
-            notif("Alors inspecteur, on l'embarque ?","white")
+    elif 535<event.x<572 and 316<event.y<436 and bool_clic2==False and coffre_ouvert==True:
+            notif("Alors inspecteur \n on embarque Sophie?\nelle dit etre allée à un bal","white")
             Perdu=False
             Gagné=False
             Perdu2=True
@@ -204,7 +205,7 @@ def presentation_clic(event): #Interactions clic liées à l'arrivée du joueur 
         can1.itemconfig(icone_perso, image=icone_perso4)
         bouton()
     elif 734<event.x<784 and 322<event.y<433 and bool_clic4==False and coffre_ouvert==True:
-        notif("Alors inspecteur, on l'embarque ?","white")
+        notif("Alors inspecteur\non embarque Martine ?\n elle dit qu'elle était avec ses petits-enfants","white")
         Perdu=False
         Gagné=False
         Perdu2=False
@@ -239,7 +240,7 @@ def presentation_clic(event): #Interactions clic liées à l'arrivée du joueur 
 def quitter1():
     global bquitter1,can2,fantome,notif,bool_clic2,bool_clic3,fantome1,quitter1,bool_fantome,k, icone_perso
     global bool_clic4,perso6,can1,bool_clic5,bool_invitation,bool_lettre,bool_intervention,bool_8,bool_2,bool_5,n2,n5,n8,indice,bindice1,bool_indice,fincharade,tentative,bool_quitter
-    global bool_bindice
+    global bool_bindice,bool_coffre
     bool_bquitter=True
     notif(" ","black")
     bquitter1.place_forget()
@@ -277,7 +278,7 @@ def quitter1():
         tentative=1
 
     if bool_clic5==True:
-        fantome1("\tMartine, toujours aussi maladroite... \n Cette énigme parle de trois endroits du manoir et d'une soustraction.\n Allons chercher ce qu'il y a dans ces endroits. Je te conseille de prendre une feuille !\n Si tu ne trouves pas les réponses demande-moi un peu d'aide, je t'accompagnerai.")
+        fantome1("\tMartine, toujours aussi maladroite... \n\tCette énigme parle de trois endroits du manoir et d'une soustraction.\n\t Allons chercher ce qu'il y a dans ces endroits. Je te conseille de prendre une feuille !\n\t Si tu ne trouves pas les réponses demande-moi un peu d'aide, je t'accompagnerai.")
         bool_indice=True
         bool_clic5=False
 
@@ -301,6 +302,9 @@ def quitter1():
             bindice1.place_forget()
             bool_indice=False
         tentative=1
+    if bool_coffre==True:
+        fantome1("\t tu as ouvert le coffre bien joué !\n\t Je pense que tu as tous les indices en main pour trouver le couplable.\n\t Embarque celui qui ma tué !")
+        bool_coffre=False
 
 
 def fantome1(texte):
@@ -360,7 +364,7 @@ def clic2(event) :
             notif2("Objectif -> Trouver ce que Martine a caché dans le tiroir")
             n+=1
     if 580<event.x<642 and 205<event.y<378 and bool_clic2==True and coffre_ouvert==True :
-        notif("Alors inspecteur, on l'embarque ?","white")
+        notif("Alors inspecteur \n on embarque Sophie?\nelle dit etre allée à un bal","white")
         Perdu=False
         Gagné=False
         Perdu2=True
@@ -400,7 +404,7 @@ def clic4(event):
             n+=1
 
     if 296<event.x<347 and 175<event.y<339 and bool_clic4==True and coffre_ouvert==True:
-        notif("Alors inspecteur, on l'embarque ?","white")
+        notif("Alors inspecteur\non embarque Martine ?\n elle dit qu'elle était avec ses petits-enfants","white")
         Perdu=False
         Gagné=False
         Perdu2=False
@@ -453,7 +457,7 @@ def voir1():
         can1.create_image(300,400,tags="n5",image=n5)
         bouton()
 def indice():
-    global can2,bindince1,premier,deuxieme,troisieme,bdeuxieme,btroisieme,bpremier,bool_indice,notif,bouton,bool_bindice
+    global can2,bindince1,premier,deuxieme,troisieme,bdeuxieme,btroisieme,bpremier,bool_indice,notif,bouton,bool_bindice,bretour1,retour1
 
     bindice1.place_forget()
     bool_bindice=False
@@ -465,13 +469,16 @@ def indice():
     bdeuxieme.place(x=300,y=550)
     btroisieme=Button(InterfaceJeu, text="Mon troisieme", command=troisieme)
     btroisieme.place(x=600,y=550)
+    bretour1=Button(InterfaceJeu, text="retour", command=retour1)
+    bretour1.place(x=745,y=645)
 
 def resetindice() :
-    global can2,premier,deuxieme,troisieme,bpremier,btroisieme,bdeuxieme
+    global can2,premier,deuxieme,troisieme,bpremier,btroisieme,bdeuxieme,bretour1
     can2.delete("indice")
     bpremier.place_forget()
     bdeuxieme.place_forget()
     btroisieme.place_forget()
+    bretour1.place_forget()
 def premier ():
     global notif,bouton,resetindice
     resetindice()
@@ -495,6 +502,10 @@ def fincharade():
     if bool_indice==True:
         bindice1.place_forget()
         bool_indice=False
+def retour1():
+    global resetindice,bool_bindice,bindice,indice,quitter1
+    resetindice()
+    quitter1()
 
 def embarquement():
     global Gagné,Perdu,notif,Gagné,image_fond,can1,gagné,bembarquement,reset_piece1,Perdu,perdu,retour,bretourmenu, Perdu1,Perdu2
@@ -798,7 +809,7 @@ def inc_coffre(nb_coffre, incdec): #1er arg position liste code; 2eme arg increm
     print("ehoh")
 
 def checkCoffre(): #fonction appelée pour vérifier le bon résultat du code tapé, n'a besoin que des données du code
-    global code_coffre, coffre_ouvert, zoom_fond, can1 ,n,notif2
+    global code_coffre, coffre_ouvert, zoom_fond, can1 ,n,notif2,bouton,bool_coffre
 
     passedcode = 0 #j'ai choisi l'incrémentation pour pouvoir valider en couleur dans le désordre
     if code_coffre[0] == 2:
@@ -818,8 +829,11 @@ def checkCoffre(): #fonction appelée pour vérifier le bon résultat du code ta
 
         can1.itemconfig(zoom_fond,image=coffre_ouvert_img)
         coffre("delete")
+        bouton()
+        bool_coffre=True
         if n==5:
             notif2("Objectif -> Embarquer le coupable")
+
     else:
         notif("Cela n'a pas l'air de fonctionner","red")
 
@@ -873,7 +887,7 @@ n5=PhotoImage(file="images/5.png")
 gagné=PhotoImage(file="images/fond fin gagne.png")
 perdu=PhotoImage(file="images/fond fin perdu.png")
 #lancement
-pygame.mixer.init()
+"""pygame.mixer.init()"""
 interface()
 '''InterfaceJeu.wm_state(newstate="zoomed")''' #mets le jeu en plein écran
 InterfaceJeu.title('233rd Roland Street; Affair for the Night Team') #change le titre du jeu
