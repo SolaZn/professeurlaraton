@@ -1,5 +1,5 @@
 from tkinter import *
-"""import pygame """
+import pygame
 
 #interface globale du jeu
 def interface():
@@ -76,9 +76,9 @@ def interface():
     Perdu2=False
     bool_coffre=False
 
-    """pygame.mixer.music.load("theme.mp3") # import du fichier
+    pygame.mixer.music.load("theme.mp3") # import du fichier
     pygame.mixer.music.play() # on joue le fichier
-    pygame.mixer.music.set_volume(0.6) # réglage du volume (facultatif)"""
+    pygame.mixer.music.set_volume(0.6) # réglage du volume (facultatif)
 
 def regles(x="1"):
     global can1,fond2,image_fond, brief2, returnb, bool_regles, start
@@ -887,7 +887,7 @@ n5=PhotoImage(file="images/5.png")
 gagné=PhotoImage(file="images/fond fin gagne.png")
 perdu=PhotoImage(file="images/fond fin perdu.png")
 #lancement
-"""pygame.mixer.init()"""
+pygame.mixer.init()
 interface()
 '''InterfaceJeu.wm_state(newstate="zoomed")''' #mets le jeu en plein écran
 InterfaceJeu.title('233rd Roland Street; Affair for the Night Team') #change le titre du jeu
