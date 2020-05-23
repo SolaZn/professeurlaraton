@@ -173,11 +173,17 @@ def quitter1():
         bool_intervention=False
 
 def fantome1(texte):
+<<<<<<< Updated upstream
     global can1,bool_piece3,can2,fantome,quitter1,notif,bquitter1,bool_fantome
     can2.create_image(100,100,tags="fantome",image=fantome)
     notif(texte,"blue")
     bquitter1=Button(InterfaceJeu, text="suivant", command=quitter1)
     bquitter1.place(x=745,y=645)
+=======
+    global can1,bool_piece3,can2,fantome,quitter1,notif,bquitter1,bool_fantome,bouton, icone_perso
+    can1.itemconfig(icone_perso, image=fantome)
+    notif(texte,"blue",posx_txt=100)
+>>>>>>> Stashed changes
     bool_fantome=True
 
 def clic_coffre(event) :
@@ -572,6 +578,14 @@ lettre=PhotoImage(file="images/feuille lettre.png")
 coffre_ferme=PhotoImage(file="images/background-4,2.png")
 coffre_ouvert_img=PhotoImage(file="images/background-4,1.png")
 transparent=PhotoImage(file="images/transparent.png")
+<<<<<<< Updated upstream
+=======
+n2=PhotoImage(file="images/2.png")
+n8=PhotoImage(file="images/8.png")
+n5=PhotoImage(file="images/5.png")
+gagné=PhotoImage(file="images/fond fin gagne.png")
+perdu=PhotoImage(file="images/fond fin perdu.png")
+>>>>>>> Stashed changes
 
 #lancement
 pygame.mixer.init()
