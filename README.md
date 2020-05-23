@@ -1,5 +1,13 @@
 # professeurlaraton
 
+Au dimanche 24 mai 2020 à 01h00,
+le jeu est jouable et considérable comme terminé.
+ #AVANCEMENT
+Curseurs sur Discord, plus qu'à implémenter
+Faire une playlist pour les musiques dans le manoir
+Finir l'écran de crédit
+ECRIRE TUTO PYGAME
+
 Au lundi 4 mai 2020 à 15h06,
 le jeu n'est pas fini.
 
