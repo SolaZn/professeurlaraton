@@ -531,7 +531,7 @@ def piece1():
     global bool_piece1,perso1,perso2,perso3,perso4, bool_clic2,bool_clic4,presentation_clic,objectif, bool_debut,fantome1,bouton
 
     if bool_debut==False:
-        fantome1("\t Hey ! Oups desolé de t'avoir fait peur . \n\t Oui oui, c'est moi Jack la victime \n\t je compte bien t'apporter toute l'aide nécessaire pour trouver le coupable !")
+        fantome1("\t Hey ! Oups désolé de t'avoir fait peur. \n\t Oui oui, c'est moi... Jack, la victime... \n\t Je compte bien t'apporter toute l'aide nécessaire afin de trouver le coupable !")
         bool_debut=True
 
     objectif()
