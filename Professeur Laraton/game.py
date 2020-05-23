@@ -1,5 +1,5 @@
 from tkinter import *
-import pygame
+"""import pygame """
 
 #interface globale du jeu
 def interface():
@@ -76,9 +76,9 @@ def interface():
     Perdu2=False
     bool_coffre=False
 
-    pygame.mixer.music.load("theme.mp3") # import du fichier
+    """pygame.mixer.music.load("theme.mp3") # import du fichier
     pygame.mixer.music.play() # on joue le fichier
-    pygame.mixer.music.set_volume(0.6) # réglage du volume (facultatif)
+    pygame.mixer.music.set_volume(0.6) # réglage du volume (facultatif) """
 
 def regles(x="1"):
     global can1,fond2,image_fond, brief2, returnb, bool_regles, start
@@ -151,10 +151,12 @@ def clic(event): #recupère les positions obtenues par objectChecker()
 def presentation_clic(event): #Interactions clic liées à l'arrivée du joueur dans le manoir
     global bool_clic2, bool_clic4, notif ,bool_intervention,bouton,n,boutonNotif,trouver,bool_8,bindice1,bool_indice,coffre_ouvert,bembarquer,embarquement,Gagné,Perdu,bool_bindice
     global bool_2,compt,compt1,k, icone_perso, bool_fin,Perdu1,Perdu2
+
     if 293<event.x<335 and 316<event.y<436 and coffre_ouvert==False :
         notif("Salut ! Je m'appelle Xavier Molingé. Vers 19 heures, j'étais à mon club de lecture\n On vient tout juste de commencer le dernier tome de Game Of Thrones ! ","white")
         bouton()
-        can1.itemconfig(icone_perso,image=icone_perso1) #affiche le perso
+        can1.itemconfig(icone_perso,image=icone_perso1)
+         #affiche le perso
     elif 293<event.x<335 and 316<event.y<436 and coffre_ouvert==True :
         notif("Alors inspecteur, \non embarque Xavier Molingé ? \nIl dit être allé à son club de lecture !","white")
         Gagné=True
@@ -531,6 +533,16 @@ def retour():
    notif(" ","white")
    bretourmenu.place_forget()
    interface()
+def souris (event):
+    if 293<event.x<335 and 316<event.y<436 or 399<event.x<446 and 304<event.y<442 :
+        InterfaceJeu.config(cursor="hand1")
+        InterfaceJeu.update_idletasks
+    else :
+        InterfaceJeu.config(cursor="arrow")
+        InterfaceJeu.update_idletasks
+
+
+
 
 #PIECE ------------------------------------------------------------------------------------------------------------------------- #PIECE
 #hall du manoir
@@ -539,7 +551,7 @@ def piece1():
     pieces du manoir dans le but de Résoudre des énigmes'''
     global can1, can2, notif, image_fond
     global bhaut_piece1, bdroit_piece1, bgauche_piece1, returnb
-    global bool_piece1,perso1,perso2,perso3,perso4, bool_clic2,bool_clic4,presentation_clic,objectif, bool_debut,fantome1,bouton
+    global bool_piece1,perso1,perso2,perso3,perso4, bool_clic2,bool_clic4,presentation_clic,objectif, bool_debut,fantome1,bouton,souris
 
     if bool_debut==False:
         fantome1("\t Hey ! Oups désolé de t'avoir fait peur. \n\t Oui oui, c'est moi... Jack, la victime... \n\t Je compte bien t'apporter toute l'aide nécessaire afin de trouver le coupable !")
@@ -582,6 +594,7 @@ def piece1():
 
     can1.focus_set() #test clic zones
     can1.bind("<ButtonPress-1>",presentation_clic)
+    can1.bind("<Motion>",souris)
 
     #fond de la piece
     can1.itemconfig(image_fond,image=fond_piece1)
@@ -887,7 +900,7 @@ n5=PhotoImage(file="images/5.png")
 gagné=PhotoImage(file="images/fond fin gagne.png")
 perdu=PhotoImage(file="images/fond fin perdu.png")
 #lancement
-pygame.mixer.init()
+"""pygame.mixer.init()"""
 interface()
 '''InterfaceJeu.wm_state(newstate="zoomed")''' #mets le jeu en plein écran
 InterfaceJeu.title('233rd Roland Street; Affair for the Night Team') #change le titre du jeu
