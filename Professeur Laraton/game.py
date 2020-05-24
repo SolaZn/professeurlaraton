@@ -305,7 +305,7 @@ def quitter1():
             bool_indice=False
         tentative=1
     if bool_coffre==True:
-        fantome1("\t tu as ouvert le coffre bien joué !\n\t Je pense que tu as tous les indices en main pour trouver le couplable.\n\t Embarque celui qui ma tué !")
+        fantome1("\t tu as ouvert le coffre bien joué ! \n\t il y a des lunettes mais qui est le coupable ? \n\t Je pense que tu as tous les indices en main pour trouver le couplable.\n\t Embarque celui qui ma tué !")
         bool_coffre=False
 
 
@@ -534,12 +534,30 @@ def retour():
    bretourmenu.place_forget()
    interface()
 def souris (event):
-    if 293<event.x<335 and 316<event.y<436 or 399<event.x<446 and 304<event.y<442 :
+    global bool_clic2,bool_clic4,n
+    if 293<event.x<335 and 316<event.y<436 or 399<event.x<446 and 304<event.y<442 or 535<event.x<572 and 316<event.y<436 and bool_clic2==False or 734<event.x<784 and 322<event.y<433 and bool_clic4==False or 138<event.x<162 and 263<event.y<293 and n>=5 or n>=5 and 592<event.x<617 and 331<event.y<364  :
         InterfaceJeu.config(cursor="hand1")
         InterfaceJeu.update_idletasks
     else :
         InterfaceJeu.config(cursor="arrow")
         InterfaceJeu.update_idletasks
+def souris2(event):
+    global n,bool_clic2
+    if 199<event.x<226 and 285<event.y<295 and n>=3 or 580<event.x<642 and 205<event.y<378 and bool_clic2==True or 73<event.x<131 and 218<event.y<309 and n>=5 :
+        InterfaceJeu.config(cursor="hand1")
+        InterfaceJeu.update_idletasks
+    else :
+        InterfaceJeu.config(cursor="arrow")
+        InterfaceJeu.update_idletasks
+def souris3(event):
+    global bool_clic4, n
+    if 255<event.x<275 and 326<event.y<371 and n>=4 or 296<event.x<347 and 175<event.y<339 and bool_clic4==True:
+        InterfaceJeu.config(cursor="hand1")
+        InterfaceJeu.update_idletasks
+    else :
+        InterfaceJeu.config(cursor="arrow")
+        InterfaceJeu.update_idletasks
+
 
 
 
@@ -617,7 +635,7 @@ def reset_piece1(): #fonction utilisée pour changer de scène, on enlève tout
 #couloir haut du manoir
 def piece2():
     global can1, can2, notif, image_fond, bbas_piece2
-    global bool_piece2,bool_clic4,perso6,bool_clic4
+    global bool_piece2,bool_clic4,perso6,bool_clic4,souris3
     bool_piece2="True"
 
     #boutons de l'interface dans la piece
@@ -631,6 +649,7 @@ def piece2():
 
     can1.focus_set() #test clic zones
     can1.bind("<ButtonPress-1>",clic4)
+    can1.bind("<Motion>",souris3)
 
     #fond de la piece
     can1.itemconfig(image_fond,image=fond_piece2)
@@ -652,7 +671,7 @@ def reset_piece2():
 #salon sous la nuit du manoir
 def piece3():
     global can1, can2, notif, image_fond, bgauche_piece3
-    global bool_piece3
+    global bool_piece3,souris2
     bool_piece3="True"
     #boutons de l'interface dans la piece
     reset_piece1()
@@ -668,6 +687,7 @@ def piece3():
     can1.itemconfig(image_fond,image=fond_piece3)
     can1.focus_set()
     can1.bind("<ButtonPress-1>",clic2)
+    can1.bind("<Motion>",souris2)
 
 
 def reset_piece3():
