@@ -557,6 +557,15 @@ def souris3(event):
     else :
         InterfaceJeu.config(cursor="arrow")
         InterfaceJeu.update_idletasks
+def souris4(event):
+    global n
+    if  0< event.x<73   and  257<event.y<301 and n>=5:
+        InterfaceJeu.config(cursor="hand1")
+        InterfaceJeu.update_idletasks
+    else :
+        InterfaceJeu.config(cursor="arrow")
+        InterfaceJeu.update_idletasks
+
 
 
 
@@ -706,7 +715,7 @@ def reset_piece3():
 def piece4():
     global can1, can2, notif, image_fond, zoom_fond
     global bdroit_piece4, bool_piece4,clic2,clic3,bool_clic2,perso5
-    global coffre_ouvert
+    global coffre_ouvert,souris4
 
     bool_piece4="True"
 
@@ -719,7 +728,8 @@ def piece4():
     #fond de la piece
     can1.itemconfig(image_fond,image=fond_piece4)
     can1.focus_set()
-    can1.bind("<ButtonPress-1>",clic_coffre) #les évenements cliqués seront opposés à la matrice clic_coffre()
+    can1.bind("<ButtonPress-1>",clic_coffre)#les évenements cliqués seront opposés à la matrice clic_coffre()
+    can1.bind("<Motion>",souris4)
 
     if coffre_actif == True and coffre_ouvert == False:
         notif("Le coffre est déjà sur la table","white",notif_type="alert")
