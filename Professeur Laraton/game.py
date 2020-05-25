@@ -348,7 +348,7 @@ def objectif() :
 
 
 def clic_coffre(event) :
-    global can1,bool_piece4,trouver,coffre_ouvert,bool_clé,bool_cle,bool_coffre2
+    global can1,bool_piece4,trouver,coffre_ouvert,bool_clé,bool_cle,bool_coffre2,n,notif
     if  0< event.x<73   and  257<event.y<301: #Si on est dans la zone et que le coffre n'a pas été ouvert
         if coffre_ouvert == False:
             trouver()
@@ -358,10 +358,12 @@ def clic_coffre(event) :
     else:
         print("stop")
 
-    if 692<event.x<727 and 112<event.y<130:
+    if 692<event.x<727 and 112<event.y<130 and n<=4:
         bool_clé=True
         bool_cle=True
         trouver()
+    if 692<event.x<727 and 112<event.y<130 and n>4:
+        notif("la clé a deja été trouvé","green")
 
 
 def clic2(event) :
@@ -407,16 +409,18 @@ def clic2(event) :
 
 def clic4(event):
     global bool_clic4,trouver,notif,bool_clic5,bool_lettre,n,notif2,bouton, icone_perso
-    global Gagné,Perdu,Perdu1,Perdu2,bool_fin,bembarquer,embarquement,coffre_ouvert,bool_cle,bool_tir
+    global Gagné,Perdu,Perdu1,Perdu2,bool_fin,bembarquer,embarquement,coffre_ouvert,bool_cle,bool_tir,n
 
-    if 255<event.x<275 and 326<event.y<371 and bool_cle==True:
+    if 255<event.x<275 and 326<event.y<371 and bool_cle==True and n<=4:
         bool_clic4=True
         bool_lettre=True
         trouver()
-    elif 255<event.x<275 and 326<event.y<371 and bool_cle==False:
+    elif 255<event.x<275 and 326<event.y<371 and bool_cle==False and n<=4:
         notif("le tirroir est fermé il faut trouver la clé","white")
         bool_tir=True
         bouton()
+    elif 255<event.x<275 and 326<event.y<371 and bool_cle==True and n>4:
+        notif("La lettre à deja été trouvé","green")
 
     if 296<event.x<347 and 175<event.y<339 and bool_clic4==True and coffre_ouvert==False:
         can1.itemconfig(icone_perso, image=icone_perso4)
