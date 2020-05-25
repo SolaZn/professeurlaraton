@@ -9,7 +9,7 @@ def interface():
     global bool_bquitter, bool_clic2, bool_clic3, bool_clic4, bool_clic5, bool_fantome
     global bool_intervention, bool_invitation, bool_lettre, bv, coffre_actif, coffre_ouvert
     global bool_2,bool_5,bool_8,compt,compt1,compt2,bool_indice,tentative,k,n,Gagné,Perdu,bool_quitter,bool_voir,bool_bindice, bool_regles, bool_debut,bool_fin
-    global Perdu1, Perdu2,bool_coffre
+    global Perdu1, Perdu2,bool_coffre,bool_cle,bool_tir,bool_clé,bool_coffre2
     #booléens de l'interface
     global texte_global, notif_in_use, fondmenu, quitter, texte_global2
 
@@ -75,6 +75,10 @@ def interface():
     Perdu1=False
     Perdu2=False
     bool_coffre=False
+    bool_cle=False
+    bool_tir=False
+    bool_clé=False
+    bool_coffre2=False
 
     """pygame.mixer.music.load("theme.mp3") # import du fichier
     pygame.mixer.music.play() # on joue le fichier
@@ -145,6 +149,7 @@ def clic(event): #recupère les positions obtenues par objectChecker()
     global clicX,clicY
     clicX=event.x
     clicY=event.y
+    print(clicX,clicY)
 
     #SPÉCIFIQUES#
 
@@ -242,7 +247,7 @@ def presentation_clic(event): #Interactions clic liées à l'arrivée du joueur 
 def quitter1():
     global bquitter1,can2,fantome,notif,bool_clic2,bool_clic3,fantome1,quitter1,bool_fantome,k, icone_perso
     global bool_clic4,perso6,can1,bool_clic5,bool_invitation,bool_lettre,bool_intervention,bool_8,bool_2,bool_5,n2,n5,n8,indice,bindice1,bool_indice,fincharade,tentative,bool_quitter
-    global bool_bindice,bool_coffre
+    global bool_bindice,bool_coffre,bool_tir,bool_clé
     bool_bquitter=True
     notif(" ","black")
     bquitter1.place_forget()
@@ -266,6 +271,12 @@ def quitter1():
         can1.create_image(320,270,tags="bleu",image=perso6)
 
         bool_lettre=False
+    if bool_tir==True:
+        fantome1("\tUne clé ? Martine adore les cheminées. \n\t Peut-etre que la clé est proche d'une cheminée ")
+        bool_tir=False
+    if bool_clé==True:
+        can1.delete("cle")
+        bool_clé=False
 
 
     if bool_indice==True and k<3 and bool_bindice==False:
@@ -305,7 +316,7 @@ def quitter1():
             bool_indice=False
         tentative=1
     if bool_coffre==True:
-        fantome1("\t tu as ouvert le coffre bien joué ! \n\t il y a des lunettes mais qui est le coupable ? \n\t Je pense que tu as tous les indices en main pour trouver le couplable.\n\t Embarque celui qui ma tué !")
+        fantome1("\t tu as ouvert le coffre bien joué ! \n\t il y a des lunettes mais qui est le coupable ? \n\t Je pense que tu as tous les indices en main pour trouver le couplable.\n\t Embarque celui qui m'a tué !")
         bool_coffre=False
 
 
@@ -337,20 +348,27 @@ def objectif() :
 
 
 def clic_coffre(event) :
-    global can1,bool_piece4,trouver,coffre_ouvert
+    global can1,bool_piece4,trouver,coffre_ouvert,bool_clé,bool_cle,bool_coffre2
     if  0< event.x<73   and  257<event.y<301: #Si on est dans la zone et que le coffre n'a pas été ouvert
         if coffre_ouvert == False:
             trouver()
+            bool_coffre2=True
         elif coffre_ouvert == True:
             notif("Le coffre a déjà été ouvert","green")
     else:
         print("stop")
 
+    if 692<event.x<727 and 112<event.y<130:
+        bool_clé=True
+        bool_cle=True
+        trouver()
+
+
 def clic2(event) :
     global can1,invitation,fantome1,perso5,bool_clic2,bool_bquitter,notif,bool_clic3,bool_invitation,notif2,n,bouton,bool_5,compt2,k,bindice1,bool_indice,bool_bindice, icone_perso, coffre_ouvert
     global Gagné,Perdu,Perdu1,Perdu2,bool_fin,bembarquer,embarquement
 
-    if  199<event.x<226 and 285<event.y<295:
+    if  199<event.x<226 and 285<event.y<295 and n<=3:
         trouver()
         bool_clic2=True
         bool_invitation=True
@@ -389,12 +407,17 @@ def clic2(event) :
 
 def clic4(event):
     global bool_clic4,trouver,notif,bool_clic5,bool_lettre,n,notif2,bouton, icone_perso
-    global Gagné,Perdu,Perdu1,Perdu2,bool_fin,bembarquer,embarquement,coffre_ouvert
+    global Gagné,Perdu,Perdu1,Perdu2,bool_fin,bembarquer,embarquement,coffre_ouvert,bool_cle,bool_tir
 
-    if 255<event.x<275 and 326<event.y<371:
+    if 255<event.x<275 and 326<event.y<371 and bool_cle==True:
         bool_clic4=True
         bool_lettre=True
         trouver()
+    elif 255<event.x<275 and 326<event.y<371 and bool_cle==False:
+        notif("le tirroir est fermé il faut trouver la clé","white")
+        bool_tir=True
+        bouton()
+
     if 296<event.x<347 and 175<event.y<339 and bool_clic4==True and coffre_ouvert==False:
         can1.itemconfig(icone_perso, image=icone_perso4)
         notif("J'avais peur de vous le dire mais j'ai trouvé un coffre fermé dans le mécanisme du piano\n Dessus, ces mots:\n - Mon premier est un recipient où l'on met des fleurs\n - Mon deuxième est une fille rousse emprisonnée dans un cadre marron\n - Mon troisième permet à la fois d'éclairer et réchauffer la piéce\n - Mon quatrième est la soustraction de mon deuxieme par mon troisieme\n -> Mon tout forme un code. J'aurais bien voulu vous le donner \nmais quelqu'un a pris le papier contenant le code dans mon bureau et l'a mis dans la cheminée.","white",posy_txt=35, posx_txt=75)
@@ -427,12 +450,12 @@ def trouver():
 
 def voir1():
     global bvoir1,bool_clic2,can1,fantome1,invitation,bool_clic4,lettre,bool_invitation,bool_lettre, coffre_ouvert, coffre_actif,bouton
-    global zoom_fond, bool_piece4,n,n2,n8,n5,bool_5,bool_2,bool_8,bool_voir
+    global zoom_fond, bool_piece4,n,n2,n8,n5,bool_5,bool_2,bool_8,bool_voir,bool_clé,clé,bool_coffre2
     bvoir1.place_forget()
     notif(" ","black")
     bool_voir=False
 
-    if coffre_ouvert == False and bool_piece4 == "True":
+    if coffre_ouvert == False and bool_piece4 == "True" and bool_coffre2==True:
         notif("Vous avez trouvé un coffre","white")
         can1.itemconfig(zoom_fond,image=coffre_ferme)
         if coffre_ouvert == True:
@@ -458,6 +481,10 @@ def voir1():
     if bool_5==True:
         can1.create_image(300,400,tags="n5",image=n5)
         bouton()
+    if bool_clé==True:
+        can1.create_image(300,420,tags="cle",image=clé)
+        fantome1("\tBravo tu as trouvé la clé .\n\t Allons voir ce qu'il y a dans ce tirroir !")
+
 def indice():
     global can2,bindince1,premier,deuxieme,troisieme,bdeuxieme,btroisieme,bpremier,bool_indice,notif,bouton,bool_bindice,bretour1,retour1
 
@@ -559,7 +586,7 @@ def souris3(event):
         InterfaceJeu.update_idletasks
 def souris4(event):
     global n
-    if  0< event.x<73   and  257<event.y<301 and n>=5:
+    if  0< event.x<73   and  257<event.y<301 and n>=5 or 692<event.x<727 and 112<event.y<130 and n>=4:
         InterfaceJeu.config(cursor="hand1")
         InterfaceJeu.update_idletasks
     else :
@@ -929,6 +956,7 @@ n8=PhotoImage(file="images/8.png")
 n5=PhotoImage(file="images/5.png")
 gagné=PhotoImage(file="images/fond fin gagne.png")
 perdu=PhotoImage(file="images/fond fin perdu.png")
+clé=PhotoImage(file="images/key.png")
 #lancement
 """pygame.mixer.init()"""
 interface()
