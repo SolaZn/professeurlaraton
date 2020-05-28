@@ -1,5 +1,5 @@
 from tkinter import *
-"""import pygame """
+import pygame
 
 #interface globale du jeu
 def interface():
@@ -80,9 +80,9 @@ def interface():
     bool_clé=False
     bool_coffre2=False
 
-    """pygame.mixer.music.load("theme.mp3") # import du fichier
+    pygame.mixer.music.load("theme.mp3") # import du fichier
     pygame.mixer.music.play() # on joue le fichier
-    pygame.mixer.music.set_volume(0.6) # réglage du volume (facultatif) """
+    pygame.mixer.music.set_volume(0.6) # réglage du volume (facultatif)
 
 def regles(x="1"):
     global can1,fond2,image_fond, brief2, returnb, bool_regles, start
@@ -100,7 +100,7 @@ def regles(x="1"):
         returnb=Button(InterfaceJeu,text='retour',command=lambda: regles("1"))
         returnb.place(x=30,y=150)
         brief2.place_forget()
-        start=Button(InterfaceJeu, text="Partons enquêter", command=piece1)
+        start=Button(InterfaceJeu, text="Allons enquêter", command=piece1)
         start.place(x=376,y=575)
     else:
         print("Mais par où êtes vous bien passé ?")
@@ -174,7 +174,7 @@ def presentation_clic(event): #Interactions clic liées à l'arrivée du joueur 
             bool_fin=True
 
     if 399<event.x<446 and 304<event.y<442 and coffre_ouvert==False :
-        notif("Je suis Mark Armeau,\nhier à 19h je suis aller boire un verre pour me changer les idées.","white")
+        notif("Je suis Mark Armeau,\nhier à 19h je suis allé boire un verre pour me changer les idées.","white")
         bouton()
         can1.itemconfig(icone_perso, image=icone_perso2)
     elif 399<event.x<446 and 304<event.y<442 and coffre_ouvert==True :
@@ -316,7 +316,7 @@ def quitter1():
             bool_indice=False
         tentative=1
     if bool_coffre==True:
-        fantome1("\t tu as ouvert le coffre bien joué ! \n\t il y a des lunettes mais qui est le coupable ? \n\t Je pense que tu as tous les indices en main pour trouver le couplable.\n\t Embarque celui qui m'a tué !")
+        fantome1("\t Tu as ouvert le coffre bien joué ! \n\t Il y a des lunettes mais qui est le coupable ? \n\t Je pense que tu as tous les indices en main pour trouver le coupable.\n\t Embarque celui qui m'a tué !")
         bool_coffre=False
 
 
@@ -416,7 +416,7 @@ def clic4(event):
         bool_lettre=True
         trouver()
     elif 255<event.x<275 and 326<event.y<371 and bool_cle==False and n<=4:
-        notif("le tirroir est fermé il faut trouver la clé","white")
+        notif("Le tiroir est fermé, il faut trouver la clé","white")
         bool_tir=True
         bouton()
     elif 255<event.x<275 and 326<event.y<371 and bool_cle==True and n>4:
@@ -541,29 +541,15 @@ def retour1():
     quitter1()
 
 def embarquement():
-    global Gagné,Perdu,notif,Gagné,image_fond,can1,gagné,bembarquement,reset_piece1,Perdu,perdu,retour,bretourmenu, Perdu1,Perdu2
-    notif("   ","white")
-    bembarquer.place_forget()
-    reset_piece1()
-    bretourmenu=Button(InterfaceJeu, text="retour menu", command=retour)
-    bretourmenu.place(x=745,y=645)
-    if Gagné==True:
-        can1.itemconfig(image_fond,image=gagné)
-        notif("En effet, il n'était pas à son club de lecture... Apparemment, il déteste Game Of Thrones (pauvre de lui...)\n Il a tué Jack, le propriétaire, juste après le dîner car il voulait récupérer son manoir et l'avoir pour lui tout seul.","white")
-    if Perdu2==True:
-         can1.itemconfig(image_fond,image=perdu)
-         notif("Mais tu n'as pas trouvé l'invitation ! Elle était innocente.","white")
-    if Perdu1==True:
-         can1.itemconfig(image_fond,image=perdu)
-         notif("Mais tu n'as pas trouvé la lettre ! Que vont penser ses petits-enfants ?","white")
-    if Perdu==True:
-         can1.itemconfig(image_fond,image=perdu)
-         notif("Il était bien au bar ce soir là, d'ailleurs l'odeur le prouvait. \n Apparemment, il aime bien la boisson. ","white")
+    fin()
+
 def retour():
    global interface,bretourmenu,notif
    notif(" ","white")
    bretourmenu.place_forget()
+   can1.delete("credits")
    interface()
+
 def souris (event):
     global bool_clic2,bool_clic4,n
     if 293<event.x<335 and 316<event.y<436 or 399<event.x<446 and 304<event.y<442 or 535<event.x<572 and 316<event.y<436 and bool_clic2==False or 734<event.x<784 and 322<event.y<433 and bool_clic4==False or 138<event.x<162 and 263<event.y<293 and n>=5 or n>=5 and 592<event.x<617 and 331<event.y<364  :
@@ -597,11 +583,6 @@ def souris4(event):
         InterfaceJeu.config(cursor="arrow")
         InterfaceJeu.update_idletasks
 
-
-
-
-
-
 #PIECE ------------------------------------------------------------------------------------------------------------------------- #PIECE
 #hall du manoir
 def piece1():
@@ -616,6 +597,8 @@ def piece1():
         bool_debut=True
 
     objectif()
+    finfin=Button(InterfaceJeu, text="fin", command=fin)
+    finfin.place(x=100,y=100)
 
     bool_piece1="True"
     #boutons de l'interface dans la piece
@@ -888,7 +871,7 @@ def checkCoffre(): #fonction appelée pour vérifier le bon résultat du code ta
     passedcode = 0 #j'ai choisi l'incrémentation pour pouvoir valider en couleur dans le désordre
     if code_coffre[0] == 2:
         passedcode += 1
-        #changer couleur chiffre réussi, la couleur est encore à appliquer, ne marche pas
+        #changer couleur chiffre mouais, la couleur pourraît être appliquée, ne marche pas
     if code_coffre[1] == 8:
         passedcode +=1
     if code_coffre[2] == 5:
@@ -922,6 +905,36 @@ def reset_piece4():
         supprimeNotif()
         bool_piece4 = "Inactive"
     can1.itemconfig(icone_perso, image=transparent)
+
+def fin():
+    global Gagné,Perdu,notif,Gagné,image_fond,can1,gagné,bembarquement,reset_piece1,Perdu,perdu,retour,bretourmenu, Perdu1,Perdu2, bcredits
+    notif("   ","white")
+    """bembarquer.place_forget()"""
+    reset_piece1()
+    reset_piece2()
+    reset_piece3()
+    reset_piece4()
+    bretourmenu=Button(InterfaceJeu, text="Recommencer", command=retour)
+    bretourmenu.place(x=725,y=505)
+    bcredits=Button(InterfaceJeu, text="Crédits", command=affcredits)
+    bcredits.place(x=725,y=555)
+    if Gagné==True:
+        can1.itemconfig(image_fond,image=gagné)
+        notif("En effet, il n'était pas à son club de lecture... Apparemment, il déteste Game Of Thrones (pauvre de lui...)\n Il a tué Jack, le propriétaire, juste après le dîner car il voulait récupérer son manoir et l'avoir pour lui tout seul.","white")
+    if Perdu2==True:
+        can1.itemconfig(image_fond,image=perdu)
+        notif("Mais tu n'as pas trouvé l'invitation ! Elle était innocente.","white")
+    if Perdu1==True:
+        can1.itemconfig(image_fond,image=perdu)
+        notif("Mais tu n'as pas trouvé la lettre ! Que vont penser ses petits-enfants ?","white")
+    if Perdu==True:
+        can1.itemconfig(image_fond,image=perdu)
+        notif("Il était bien au bar ce soir là, d'ailleurs l'odeur le prouvait. \n Apparemment, il aime bien la boisson. ","white")
+
+def affcredits():
+    global bcredits
+    bcredits.place_forget()
+    notif("   ","white")
 
 #----- PARTIE EXECUTION DU CODE -----
 #creation fenetre graphique
@@ -962,8 +975,8 @@ gagné=PhotoImage(file="images/fond fin gagne.png")
 perdu=PhotoImage(file="images/fond fin perdu.png")
 clé=PhotoImage(file="images/key.png")
 #lancement
-"""pygame.mixer.init()"""
+pygame.mixer.init()
 interface()
 '''InterfaceJeu.wm_state(newstate="zoomed")''' #mets le jeu en plein écran
-InterfaceJeu.title('233rd Roland Street; Affair for the Night Team') #change le titre du jeu
+InterfaceJeu.title('Detective Larathon and The Phantom Menace') #change le titre du jeu
 InterfaceJeu.mainloop()
