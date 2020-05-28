@@ -660,7 +660,7 @@ def piece1():
 def reset_piece1(): #fonction utilisée pour changer de scène, on enlève tout
     global bhaut_piece1, bdroit_piece1, bgauche_piece1, supprimeNotif
     global bool_piece1,perso1,perso2,perso3,perso4, icone_perso
-    if bool_piece1=="True" or bool_piece1 == "Inactive":
+    if bool_piece1=="True" :
         bhaut_piece1.place_forget()
         bdroit_piece1.place_forget()
         bgauche_piece1.place_forget()
@@ -699,10 +699,10 @@ def piece2():
 def reset_piece2():
     global can1, can2, image_fond, bbas_piece2, supprimeNotif,perso6,bool_clic4
     global bool_piece2, icone_perso
-    if bool_piece2=="True" or bool_piece2 == "Inactive":
+    if bool_piece2=="True" :
         bbas_piece2.place_forget()
         supprimeNotif()
-        bool_piece2 = "Inactive"
+        bool_piece2 = "Inactif"
     if bool_clic4==True:
         can1.delete("bleu")
     can1.itemconfig(icone_perso, image=transparent)
@@ -733,7 +733,7 @@ def piece3():
 def reset_piece3():
     global bgauche_piece3, supprimeNotif
     global bool_piece3, icone_perso
-    if bool_piece3=="True" or bool_piece3 == "Inactive" :
+    if bool_piece3=="True"  :
         bgauche_piece3.place_forget()
         supprimeNotif()
         bool_piece3 = "Inactive"
@@ -914,7 +914,7 @@ def checkCoffre(): #fonction appelée pour vérifier le bon résultat du code ta
 def reset_piece4():
     global bdroit_piece4
     global bool_piece4, coffre_actif, zoom_fond, can1, icone_perso
-    if bool_piece4 == "True" or bool_piece4 == "Inactive" :
+    if bool_piece4 == "True"  :
         bdroit_piece4.place_forget()
         if coffre_actif == True:
             coffre("delete")
