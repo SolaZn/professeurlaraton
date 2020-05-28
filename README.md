@@ -1,4 +1,10 @@
 # professeurlaraton
+LE JEU NECESSITE L'INSTALLATION SUR PYTHON DE LA SUITE PYGAME.
+
+Au vendredi 29 mai 2020 à 01h09,
+on peut dire que le jeu est TERMINÉ. 
+L'ensemble des fonctionnalités a été implémenté,
+mais ce n'est pas le gold du jeu : il manque le tuto pygame (installer pygame sur son Python (nécessaire au bon fonctionnement de la musique) et quelques bug fixes notamment sur le bembarquer qui ne disparaît pas toujours. 
 
 Au dimanche 24 mai 2020 à 01h00,
 le jeu est jouable et considérable comme terminé.
