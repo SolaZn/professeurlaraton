@@ -795,9 +795,9 @@ def piece4():
         '''fantome1("Trouvons le code !")''' #bloque l'affichage de l'alerte
         can1.itemconfig(zoom_fond,image=coffre_ferme)
         coffre("init")
-    if coffre_ouvert == True:
+    """if coffre_ouvert == True :                  Provoque un bug d'affichage de l'endgame... On le cut.
         notif("Le coffre a déjà été ouvert","green",size="big",notif_type="alert")
-        '''fantome1("Tu devrais jeter un oeil ailleurs")  #fantome notifie utilisateur de la fin de l'énigme''' #à vérifier mais ça bloque l'affichage des alertes notifs
+        '''fantome1("Tu devrais jeter un oeil ailleurs")  #fantome notifie utilisateur de la fin de l'énigme''' #à vérifier mais ça bloque l'affichage des alertes notifs """
 
 #EVENTS LIÉS AU COFFRE
 def coffre(mode): #le coffre est l'énigme de la piece, init initialisation du coffre, refresh actualisation du coffre, delete suppression
