@@ -156,7 +156,7 @@ def clic(event): #recupère les positions obtenues par objectChecker()
 
 def presentation_clic(event): #Interactions clic liées à l'arrivée du joueur dans le manoir
     global bool_clic2, bool_clic4, notif ,bool_intervention,bouton,n,boutonNotif,trouver,bool_8,bindice1,bool_indice,coffre_ouvert,bembarquer,embarquement,Gagné,Perdu,bool_bindice
-    global bool_2,compt,compt1,k, icone_perso, bool_fin,Perdu1,Perdu2
+    global bool_2,compt,compt1,k, icone_perso, bool_fin,Perdu1,Perdu2,reset_bouton
 
     if 293<event.x<335 and 316<event.y<436 and coffre_ouvert==False :
         notif("Salut ! Je m'appelle Xavier Molingé. Vers 19 heures, j'étais à mon club de lecture\n On vient tout juste de commencer le dernier tome de Game Of Thrones ! ","white")
@@ -227,6 +227,7 @@ def presentation_clic(event): #Interactions clic liées à l'arrivée du joueur 
         bool_8=True
         trouver()
         compt+=1
+        reset_bouton()
         if bool_indice==True:
             bindice1.place_forget()
             bool_bindice=False
@@ -237,6 +238,7 @@ def presentation_clic(event): #Interactions clic liées à l'arrivée du joueur 
         bool_2=True
         trouver()
         compt1+=1
+        reset_bouton()
         if bool_indice==True:
             bindice1.place_forget()
             bool_bindice=False
@@ -348,13 +350,14 @@ def objectif() :
 
 
 def clic_coffre(event) :
-    global can1,bool_piece4,trouver,coffre_ouvert,bool_clé,bool_cle,bool_coffre2,n,notif
+    global can1,bool_piece4,trouver,coffre_ouvert,bool_clé,bool_cle,bool_coffre2,n,notif,reset_bouton
     if  0< event.x<73   and  257<event.y<301 and bool_cle == True: #Si on est dans la zone et que le coffre n'a pas été ouvert
         if coffre_ouvert == False:
             trouver()
             bool_coffre2=True
         elif coffre_ouvert == True:
             notif("Le coffre a déjà été ouvert","green")
+            reset_bouton()
 
     if 692<event.x<727 and 112<event.y<130 and n<=4:
         bool_clé=True
@@ -362,11 +365,12 @@ def clic_coffre(event) :
         trouver()
     if 692<event.x<727 and 112<event.y<130 and n>4:
         notif("La clé a déja été trouvée","green")
+        reset_bouton()
 
 
 def clic2(event) :
     global can1,invitation,fantome1,perso5,bool_clic2,bool_bquitter,notif,bool_clic3,bool_invitation,notif2,n,bouton,bool_5,compt2,k,bindice1,bool_indice,bool_bindice, icone_perso, coffre_ouvert
-    global Gagné,Perdu,Perdu1,Perdu2,bool_fin,bembarquer,embarquement
+    global Gagné,Perdu,Perdu1,Perdu2,bool_fin,bembarquer,embarquement,reset_bouton
 
     if  199<event.x<226 and 285<event.y<295 and n<=3:
         trouver()
@@ -374,6 +378,7 @@ def clic2(event) :
         bool_invitation=True
     elif  199<event.x<226 and 285<event.y<295 and n>3:
         notif("L'invitation a déjà été trouvée","green")
+        reset_bouton()
 
     if 580<event.x<642 and 205<event.y<378 and bool_clic2==True and coffre_ouvert==False :
         notif("Merci de l'avoir retrouvée ! Maintenant je peux vous faire confiance...\nJ'ai vu Martine cacher quelque chose dans un tiroir dans le couloir \ndu haut en revenant des toilettes.","white", posx_txt=0)
@@ -398,6 +403,7 @@ def clic2(event) :
         bool_5=True
         trouver()
         compt2+=1
+        reset_bouton()
         if bool_indice==True:
             bindice1.place_forget()
             bool_bindice=False
@@ -407,7 +413,7 @@ def clic2(event) :
 
 def clic4(event):
     global bool_clic4,trouver,notif,bool_clic5,bool_lettre,n,notif2,bouton, icone_perso
-    global Gagné,Perdu,Perdu1,Perdu2,bool_fin,bembarquer,embarquement,coffre_ouvert,bool_cle,bool_tir,n
+    global Gagné,Perdu,Perdu1,Perdu2,bool_fin,bembarquer,embarquement,coffre_ouvert,bool_cle,bool_tir,n,reset_bouton
 
     if 255<event.x<275 and 326<event.y<371 and bool_cle==True and n<=4:
         bool_clic4=True
@@ -419,6 +425,7 @@ def clic4(event):
         bouton()
     elif 255<event.x<275 and 326<event.y<371 and bool_cle==True and n>4:
         notif("La lettre a déja été trouvé","green")
+        reset_bouton()
 
     if 296<event.x<347 and 175<event.y<339 and bool_clic4==True and coffre_ouvert==False:
         can1.itemconfig(icone_perso, image=icone_perso4)
