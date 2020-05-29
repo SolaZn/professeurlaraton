@@ -1,6 +1,49 @@
+"""
+      :::::::::  :::::::::: ::::::::::: :::::::::: :::::::: ::::::::::: ::::::::::: :::     ::: ::::::::::           :::            :::     :::::::::      ::: ::::::::::: :::    :::  ::::::::  ::::    :::
+     :+:    :+: :+:            :+:     :+:       :+:    :+:    :+:         :+:     :+:     :+: :+:                  :+:          :+: :+:   :+:    :+:   :+: :+:   :+:     :+:    :+: :+:    :+: :+:+:   :+:
+    +:+    +:+ +:+            +:+     +:+       +:+           +:+         +:+     +:+     +:+ +:+                  +:+         +:+   +:+  +:+    +:+  +:+   +:+  +:+     +:+    +:+ +:+    +:+ :+:+:+  +:+
+   +#+    +:+ +#++:++#       +#+     +#++:++#  +#+           +#+         +#+     +#+     +:+ +#++:++#             +#+        +#++:++#++: +#++:++#:  +#++:++#++: +#+     +#++:++#++ +#+    +:+ +#+ +:+ +#+
+  +#+    +#+ +#+            +#+     +#+       +#+           +#+         +#+      +#+   +#+  +#+                  +#+        +#+     +#+ +#+    +#+ +#+     +#+ +#+     +#+    +#+ +#+    +#+ +#+  +#+#+#
+ #+#    #+# #+#            #+#     #+#       #+#    #+#    #+#         #+#       #+#+#+#   #+#                  #+#        #+#     #+# #+#    #+# #+#     #+# #+#     #+#    #+# #+#    #+# #+#   #+#+#
+#########  ##########     ###     ########## ########     ###     ###########     ###     ##########           ########## ###     ### ###    ### ###     ### ###     ###    ###  ########  ###    ####
+          :::     ::::    ::: :::::::::       ::::::::::: :::    ::: ::::::::::           :::::::::  :::    :::     :::     ::::    ::: ::::::::::: ::::::::    :::   :::             :::   :::   :::::::::: ::::    :::     :::      ::::::::  ::::::::::
+       :+: :+:   :+:+:   :+: :+:    :+:          :+:     :+:    :+: :+:                  :+:    :+: :+:    :+:   :+: :+:   :+:+:   :+:     :+:    :+:    :+:  :+:+: :+:+:           :+:+: :+:+:  :+:        :+:+:   :+:   :+: :+:   :+:    :+: :+:
+     +:+   +:+  :+:+:+  +:+ +:+    +:+          +:+     +:+    +:+ +:+                  +:+    +:+ +:+    +:+  +:+   +:+  :+:+:+  +:+     +:+    +:+    +:+ +:+ +:+:+ +:+         +:+ +:+:+ +:+ +:+        :+:+:+  +:+  +:+   +:+  +:+        +:+
+   +#++:++#++: +#+ +:+ +#+ +#+    +:+          +#+     +#++:++#++ +#++:++#             +#++:++#+  +#++:++#++ +#++:++#++: +#+ +:+ +#+     +#+    +#+    +:+ +#+  +:+  +#+         +#+  +:+  +#+ +#++:++#   +#+ +:+ +#+ +#++:++#++: +#+        +#++:++#
+  +#+     +#+ +#+  +#+#+# +#+    +#+          +#+     +#+    +#+ +#+                  +#+        +#+    +#+ +#+     +#+ +#+  +#+#+#     +#+    +#+    +#+ +#+       +#+         +#+       +#+ +#+        +#+  +#+#+# +#+     +#+ +#+        +#+
+ #+#     #+# #+#   #+#+# #+#    #+#          #+#     #+#    #+# #+#                  #+#        #+#    #+# #+#     #+# #+#   #+#+#     #+#    #+#    #+# #+#       #+#         #+#       #+# #+#        #+#   #+#+# #+#     #+# #+#    #+# #+#
+###     ### ###    #### #########           ###     ###    ### ##########           ###        ###    ### ###     ### ###    ####     ###     ########  ###       ###         ###       ### ########## ###    #### ###     ###  ########  ##########
+
+Detective Larathon and The Phantom Menace (2020)
+Développé par maketheswitch, jeremyl23 et Mickael11
+dans le cadre de l'épreuve d'Informatique et Sciences du Numérique
+de la session 2020 du Baccalauréat Scientifique spécalité SVT
+
+Crédits disponibles dans le fichier images/fonds_credits.png
+Lancez ce fichier pour démarrer le jeu
+Ce jeu nécessite la présence sur votre version de Python de la suite Pygame
+afin de faire fonctionner les pistes musicales.
+Dans le cas où vous ne posséderiez pas Pygame, un fichier d'installation
+de la suite pour PC x64 ainsi qu'une FAQ sur l'installation est disponible à la racine
+du jeu. Si vous ne pouvez pas installer Pygame pour x raisons, nous vous demanderons
+de mettre en COMMENTAIRES les lignes correspondant à l'utilisation de cette suite afin
+de lancer le jeu sans piste musicale (ce qui est dommage); 1 ligne juste en dessous, quelques
+lignes dans interface(), d'autres dans piece1() et enfin dans on_closing().
+
+Conseil: "Appuyer sur suivant quand vous avez un message, sinon c'est pas cool pour le code,
+même si il s'en remettra"
+
+Le jeu est disponible sur Github à l'adresse github.com/maketheswitch/professeurlaraton,
+cependant, il se peut qu'à l'heure où vous consultez ce lien, le projet ne soit plus public.
+
+Merci de jouer (et de lire ce header !)
+(header: maketheswitch "Anthony")
+"""
+
 from tkinter import *
 from tkinter import messagebox
-import pygame
+
+import pygame #CE JEU NÉCESSITE LA PRÉSENCE DE PYGAME SUR VOTRE VERSION DE PYTHON POUR FAIRE FONCTIONNER SA MUSIQUE.
 
 #interface globale du jeu
 def interface():
@@ -83,7 +126,7 @@ def interface():
 
     pygame.mixer.music.load("music/theme.mp3") # import du fichier
     pygame.mixer.music.play(loops=-1) # on joue le fichier
-    pygame.mixer.music.set_volume(0.6) # réglage du volume (facultatif)"""
+    pygame.mixer.music.set_volume(0.6) # réglage du volume (facultatif)
 
 def regles(x="1"):
     global can1,fond2,image_fond, brief2, returnb, bool_regles, start
@@ -153,7 +196,6 @@ def clic(event): #recupère les positions obtenues par objectChecker()
     print(clicX,clicY)
 
     #SPÉCIFIQUES#
-
 def presentation_clic(event): #Interactions clic liées à l'arrivée du joueur dans le manoir
     global bool_clic2, bool_clic4, notif ,bool_intervention,bouton,n,boutonNotif,trouver,bool_8,bindice1,bool_indice,coffre_ouvert,bembarquer,embarquement,Gagné,Perdu,bool_bindice
     global bool_2,compt,compt1,k, icone_perso, bool_fin,Perdu1,Perdu2,reset_bouton
@@ -198,7 +240,7 @@ def presentation_clic(event): #Interactions clic liées à l'arrivée du joueur 
             notif2("Objectif -> Retrouver l'invitation de Sophie pour l'innocenter")
             n+=1
     elif 535<event.x<572 and 316<event.y<436 and bool_clic2==False and coffre_ouvert==True:
-            notif("Alors inspecteur \n on embarque Sophie?\nelle dit etre allée à un bal","white")
+            notif("Alors inspecteur \n on embarque Sophie?\nelle dit etre allée à un bal après le dîner.","white")
             Perdu=False
             Gagné=False
             Perdu2=True
@@ -213,7 +255,7 @@ def presentation_clic(event): #Interactions clic liées à l'arrivée du joueur 
         can1.itemconfig(icone_perso, image=icone_perso4)
         bouton()
     elif 734<event.x<784 and 322<event.y<433 and bool_clic4==False and coffre_ouvert==True:
-        notif("Alors inspecteur\non embarque Martine ?\n elle dit qu'elle était avec ses petits-enfants","white")
+        notif("Alors inspecteur,\non embarque Martine ?\nElle dit qu'elle était avec ses petits-enfants au moment du meurtre.","white")
         Perdu=False
         Gagné=False
         Perdu2=False
@@ -244,8 +286,6 @@ def presentation_clic(event): #Interactions clic liées à l'arrivée du joueur 
             bool_bindice=False
         if compt1==1:
             k+=1
-
-
 
 def quitter1():
     global bquitter1,can2,fantome,notif,bool_clic2,bool_clic3,fantome1,quitter1,bool_fantome,k, icone_perso
@@ -321,7 +361,6 @@ def quitter1():
         fantome1("Tu as ouvert le coffre bien joué ! \nRegarde bien le coffre, mais qui est donc le coupable ? \nJe pense que tu as tous les indices en main pour trouver le coupable.\nEmbarque celui qui m'a tué !")
         bool_coffre=False
 
-
 def fantome1(texte):
     global can1,bool_piece3,can2,fantome,quitter1,notif,bquitter1,bool_fantome,bouton, icone_perso
     notif(texte,"blue")
@@ -337,17 +376,16 @@ def bouton():
         bquitter1.place(x=745,y=645)
         bool_quitter=True
 
-
 def notif2(texte):
     global texte_global2,can2
     can2.itemconfig(texte_global2,text=texte,fill="red")
+
 def objectif() :
     global notif2,bool_intervention,bool_clic3,n
     if n==1:
 
         notif2("Objectif -> Parler aux suspects")
         n+=1
-
 
 def clic_coffre(event) :
     global can1,bool_piece4,trouver,coffre_ouvert,bool_clé,bool_cle,bool_coffre2,n,notif,reset_bouton
@@ -366,7 +404,6 @@ def clic_coffre(event) :
     if 692<event.x<727 and 112<event.y<130 and n>4:
         notif("La clé a déja été trouvée","green")
         reset_bouton()
-
 
 def clic2(event) :
     global can1,invitation,fantome1,perso5,bool_clic2,bool_bquitter,notif,bool_clic3,bool_invitation,notif2,n,bouton,bool_5,compt2,k,bindice1,bool_indice,bool_bindice, icone_perso, coffre_ouvert
@@ -410,7 +447,6 @@ def clic2(event) :
         if compt2==1:
             k+=1
 
-
 def clic4(event):
     global bool_clic4,trouver,notif,bool_clic5,bool_lettre,n,notif2,bouton, icone_perso
     global Gagné,Perdu,Perdu1,Perdu2,bool_fin,bembarquer,embarquement,coffre_ouvert,bool_cle,bool_tir,n,reset_bouton
@@ -438,7 +474,7 @@ def clic4(event):
             n+=1
 
     if 296<event.x<347 and 175<event.y<339 and bool_clic4==True and coffre_ouvert==True:
-        notif("Alors inspecteur,\non embarque Martine ?\n Elle dit qu'elle était avec ses petits-enfants au moment du meurtre","white")
+        notif("Alors inspecteur,\non embarque Martine ?\nElle dit qu'elle était avec ses petits-enfants au moment du meurtre.","white")
         Perdu=False
         Gagné=False
         Perdu2=False
@@ -720,7 +756,6 @@ def piece3():
     can1.focus_set()
     can1.bind("<ButtonPress-1>",clic2)
     can1.bind("<Motion>",souris2)
-
 
 def reset_piece3():
     global bgauche_piece3, supprimeNotif
