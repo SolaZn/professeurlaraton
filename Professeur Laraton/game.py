@@ -83,7 +83,7 @@ def interface():
 
     pygame.mixer.music.load("music/theme.mp3") # import du fichier
     pygame.mixer.music.play(loops=-1) # on joue le fichier
-    pygame.mixer.music.set_volume(0.6) # réglage du volume (facultatif)
+    pygame.mixer.music.set_volume(0.6) # réglage du volume (facultatif)"""
 
 def regles(x="1"):
     global can1,fond2,image_fond, brief2, returnb, bool_regles, start
@@ -580,6 +580,11 @@ def souris4(event):
     else :
         InterfaceJeu.config(cursor="arrow")
         InterfaceJeu.update_idletasks
+def reset_bouton():
+    global bool_fin,bembarquer
+    if bool_fin==True:
+        bembarquer.place_forget()
+        bool_fin=False
 
 #PIECE ------------------------------------------------------------------------------------------------------------------------- #PIECE
 #hall du manoir
@@ -588,7 +593,7 @@ def piece1():
     pieces du manoir dans le but de Résoudre des énigmes'''
     global can1, can2, notif, image_fond
     global bhaut_piece1, bdroit_piece1, bgauche_piece1, returnb
-    global bool_piece1,perso1,perso2,perso3,perso4, bool_clic2,bool_clic4,presentation_clic,objectif, bool_debut,fantome1,bouton,souris
+    global bool_piece1,perso1,perso2,perso3,perso4, bool_clic2,bool_clic4,presentation_clic,objectif, bool_debut,fantome1,bouton,souris,reset_bouton
 
     objectif()
     bool_piece1="True"
@@ -598,6 +603,7 @@ def piece1():
     reset_piece2()
     reset_piece3()
     reset_piece4()
+    reset_bouton()
 
     if bool_debut==False:
         fantome1("Hey ! Oups désolé de t'avoir fait peur. \nOui oui, c'est moi... Jack, la victime... \nJe compte bien t'apporter toute l'aide nécessaire afin de trouver le coupable !")
@@ -656,11 +662,12 @@ def reset_piece1(): #fonction utilisée pour changer de scène, on enlève tout
 #couloir haut du manoir
 def piece2():
     global can1, can2, notif, image_fond, bbas_piece2
-    global bool_piece2,bool_clic4,perso6,bool_clic4,souris3
+    global bool_piece2,bool_clic4,perso6,bool_clic4,souris3,reset_bouton
     bool_piece2="True"
 
     #boutons de l'interface dans la piece
     reset_piece1()
+    reset_bouton()
     bbas_piece2=Button(InterfaceJeu, text="↓", command=piece1)
     bbas_piece2.place(x=755,y=575)
 
@@ -690,11 +697,11 @@ def reset_piece2():
 #salon sous la nuit du manoir
 def piece3():
     global can1, can2, notif, image_fond, bgauche_piece3
-    global bool_piece3,souris2
+    global bool_piece3,souris2,reset_bouton
     bool_piece3="True"
     #boutons de l'interface dans la piece
     reset_piece1()
-
+    reset_bouton()
     bgauche_piece3=Button(InterfaceJeu, text="←", command=piece1)
     bgauche_piece3.place(x=735,y=575)
 
@@ -724,12 +731,13 @@ def reset_piece3():
 def piece4():
     global can1, can2, notif, image_fond, zoom_fond
     global bdroit_piece4, bool_piece4,clic2,clic3,bool_clic2,perso5
-    global coffre_ouvert,souris4
+    global coffre_ouvert,souris4,reset_bouton
 
     bool_piece4="True"
 
     #boutons de l'interface dans la piece
     reset_piece1()
+    reset_bouton()
 
     bdroit_piece4=Button(InterfaceJeu, text="→", command=piece1)
     bdroit_piece4.place(x=775,y=575)
