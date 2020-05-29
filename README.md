@@ -1,6 +1,10 @@
 # professeurlaraton
 LE JEU NECESSITE L'INSTALLATION SUR PYTHON DE LA SUITE PYGAME.
+INSTALLATION PYGAME : https://zestedesavoir.com/tutoriels/846/pygame-pour-les-zesteurs/1381_a-la-decouverte-de-pygame/5503_installer-et-importer-pygame/ ; Vous devez exécuter la commande "python -m pip install pygame" depuis votre Console sur votre clé (Console_Launcher.exe pour ceux avec Pyscripter) ou alors directement depuis l'invité de commande si Python est installé sur votre ordinateur. 
 
+Une version de pygame était disponible sur le github mais a été retirée pour des raisons de droits.
+
+#####################################################################################################""
 Au vendredi 29 mai 2020 à 01h09,
 on peut dire que le jeu est TERMINÉ. 
 L'ensemble des fonctionnalités a été implémenté,
